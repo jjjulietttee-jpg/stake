@@ -1,0 +1,337 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/shared/widgets/custom_elevated_button.dart';
+import '../../../../core/shared/widgets/custom_text.dart';
+import '../../../../core/shared/widgets/card_widget.dart';
+import '../../../../core/shared/widgets/custom_popup.dart';
+import '../../../../core/theme/app_theme.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final ScrollController _scrollController = ScrollController();
+  String? _userName;
+  bool _showNamePopup = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_showNamePopup) {
+        _showUserNameDialog();
+      }
+    });
+  }
+
+  void _showUserNameDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => CustomPopup(
+        title: 'Welcome!',
+        subtitle: 'What should we call you?',
+        hintText: 'Enter your name',
+        confirmButtonText: 'Save',
+        onConfirm: (name) {
+          setState(() {
+            _userName = name;
+            _showNamePopup = false;
+          });
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              AppColors.primaryDark,
+              AppColors.secondaryDark,
+              AppColors.primaryDark,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: const [0.0, 0.5, 1.0],
+          ),
+        ),
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            // App Bar with parallax effect
+            SliverAppBar(
+              expandedHeight: 200,
+              floating: false,
+              pinned: true,
+              backgroundColor: AppColors.primaryDark.withValues(alpha: 0.9),
+              flexibleSpace: FlexibleSpaceBar(
+                title: CustomText.subtitle(
+                  text: _userName != null ? 'Hello, $_userName!' : 'Stake Games',
+                  hasGlow: true,
+                ),
+                background: Container(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: Alignment.center,
+                      radius: 1.5,
+                      colors: [
+                        AppColors.accent.withValues(alpha: 0.2),
+                        AppColors.secondaryDark.withValues(alpha: 0.8),
+                        AppColors.primaryDark,
+                      ],
+                    ),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.games,
+                      size: 80,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => context.push('/profile'),
+                  icon: const Icon(
+                    Icons.person,
+                    color: AppColors.accent,
+                    size: 28,
+                  ),
+                ),
+              ],
+            ),
+            // Main content
+            SliverPadding(
+              padding: const EdgeInsets.all(24),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  // Welcome section
+                  const CustomText.title(
+                    text: 'Ready to Play?',
+                    textAlign: TextAlign.center,
+                    hasGlow: true,
+                  ),
+                  const SizedBox(height: 12),
+                  CustomText.body(
+                    text: 'Choose a game and start winning right now!',
+                    textAlign: TextAlign.center,
+                    color: AppColors.textPrimary.withValues(alpha: 0.8),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Main play button
+                  CustomElevatedButton(
+                    text: 'PLAY NOW',
+                    backgroundColor: AppColors.buttonRed,
+                    height: 80,
+                    icon: Icons.play_arrow,
+                    onPressed: () => context.push('/game'),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Quick access cards
+                  const CustomText.subtitle(
+                    text: 'Quick Access',
+                    hasGlow: false,
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CardWidget(
+                          hasGlow: true,
+                          onTap: () => context.push('/profile'),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                size: 48,
+                                color: AppColors.accent,
+                                shadows: [
+                                  Shadow(
+                                    color: AppColors.accent.withValues(alpha: 0.5),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              const CustomText.body(
+                                text: 'Profile',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CardWidget(
+                          hasGlow: true,
+                          onTap: () => context.push('/profile'),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.emoji_events,
+                                size: 48,
+                                color: AppColors.accent,
+                                shadows: [
+                                  Shadow(
+                                    color: AppColors.accent.withValues(alpha: 0.5),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              const CustomText.body(
+                                text: 'Achievements',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Game categories
+                  const CustomText.subtitle(
+                    text: 'Game Categories',
+                    hasGlow: false,
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  CardWidget(
+                    onTap: () => context.push('/game'),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              colors: [
+                                AppColors.buttonRed.withValues(alpha: 0.3),
+                                Colors.transparent,
+                              ],
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.extension,
+                            size: 32,
+                            color: AppColors.buttonRed,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText.body(
+                                text: 'Puzzle Games',
+                                fontWeight: FontWeight.bold,
+                              ),
+                              SizedBox(height: 4),
+                              CustomText(
+                                text: 'Classic and modern puzzle games',
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.accent,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  CardWidget(
+                    onTap: () => context.push('/game'),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              colors: [
+                                AppColors.accent.withValues(alpha: 0.3),
+                                Colors.transparent,
+                              ],
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.sports_esports,
+                            size: 32,
+                            color: AppColors.accent,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText.body(
+                                text: 'Arcade Games',
+                                fontWeight: FontWeight.bold,
+                              ),
+                              SizedBox(height: 4),
+                              CustomText(
+                                text: 'Action-packed arcade adventures',
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.accent,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Edit name button
+                  if (_userName != null)
+                    CustomElevatedButton(
+                      text: 'Change Name',
+                      backgroundColor: AppColors.cardBackground,
+                      onPressed: _showUserNameDialog,
+                      icon: Icons.edit,
+                    ),
+                ]),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+}
