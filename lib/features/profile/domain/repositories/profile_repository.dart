@@ -12,4 +12,10 @@ abstract class ProfileRepository {
     required int score,
     required int playTime,
   });
+  Future<void> syncEngagementMetrics({
+    required int currentStreak,
+    required int longestStreak,
+    required int totalChallengesCompleted,
+    required int totalBonusContentViewed,
+  });
 }

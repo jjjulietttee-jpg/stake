@@ -11,6 +11,11 @@ class UserProfile extends Equatable {
   final DateTime createdAt;
   final DateTime lastPlayedAt;
   final Map<String, int> gameStats; // game type -> best score
+  // Engagement metrics
+  final int currentStreak;
+  final int longestStreak;
+  final int totalChallengesCompleted;
+  final int totalBonusContentViewed;
 
   const UserProfile({
     required this.id,
@@ -23,6 +28,10 @@ class UserProfile extends Equatable {
     required this.createdAt,
     required this.lastPlayedAt,
     required this.gameStats,
+    this.currentStreak = 0,
+    this.longestStreak = 0,
+    this.totalChallengesCompleted = 0,
+    this.totalBonusContentViewed = 0,
   });
 
   UserProfile copyWith({
@@ -36,6 +45,10 @@ class UserProfile extends Equatable {
     DateTime? createdAt,
     DateTime? lastPlayedAt,
     Map<String, int>? gameStats,
+    int? currentStreak,
+    int? longestStreak,
+    int? totalChallengesCompleted,
+    int? totalBonusContentViewed,
   }) {
     return UserProfile(
       id: id ?? this.id,
@@ -48,6 +61,10 @@ class UserProfile extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       lastPlayedAt: lastPlayedAt ?? this.lastPlayedAt,
       gameStats: gameStats ?? this.gameStats,
+      currentStreak: currentStreak ?? this.currentStreak,
+      longestStreak: longestStreak ?? this.longestStreak,
+      totalChallengesCompleted: totalChallengesCompleted ?? this.totalChallengesCompleted,
+      totalBonusContentViewed: totalBonusContentViewed ?? this.totalBonusContentViewed,
     );
   }
 
@@ -76,5 +93,9 @@ class UserProfile extends Equatable {
         createdAt,
         lastPlayedAt,
         gameStats,
+        currentStreak,
+        longestStreak,
+        totalChallengesCompleted,
+        totalBonusContentViewed,
       ];
 }

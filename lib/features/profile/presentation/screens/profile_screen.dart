@@ -10,6 +10,8 @@ import '../bloc/profile_event.dart';
 import '../bloc/profile_state.dart';
 import '../widgets/profile_stats_widget.dart';
 import '../../domain/entities/achievement.dart';
+import '../../../engagement/domain/services/engagement_service.dart';
+import '../../domain/repositories/profile_repository.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -99,9 +101,27 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
               
               // Load achievements in background for quick stats
               if (state is ProfileOnlyLoaded) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
                   if (mounted) {
                     context.read<ProfileBloc>().add(const LoadAchievements());
+                    // Sync engagement metrics
+                    try {
+                      final engagementService = getIt<EngagementService>();
+                      final engagementProfile = await engagementService.getEngagementProfile();
+                      final profileRepo = getIt<ProfileRepository>();
+                      await profileRepo.syncEngagementMetrics(
+                        currentStreak: engagementProfile.currentStreak,
+                        longestStreak: engagementProfile.longestStreak,
+                        totalChallengesCompleted: engagementProfile.totalChallengesCompleted,
+                        totalBonusContentViewed: engagementProfile.totalBonusContentViewed,
+                      );
+                      // Refresh profile to show updated engagement metrics
+                      if (mounted) {
+                        context.read<ProfileBloc>().add(const RefreshProfile());
+                      }
+                    } catch (e) {
+                      // Silently fail - engagement metrics are optional
+                    }
                   }
                 });
               }
@@ -205,59 +225,69 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                         const SizedBox(height: 24),
 
                         // Quick Achievement Preview
-                        Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                AppColors.accent.withValues(alpha: 0.2),
-                                AppColors.accent.withValues(alpha: 0.1),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: AppColors.accent.withValues(alpha: 0.3),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const CustomText.subtitle(
-                                    text: 'Achievement Progress',
-                                    hasGlow: true,
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 6,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.accent.withValues(alpha: 0.3),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: CustomText.body(
-                                      text: achievements.isNotEmpty 
-                                          ? '${achievements.where((a) => a.isUnlocked).length}/${achievements.length}'
-                                          : 'Loading...',
-                                      color: AppColors.accent,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  AppColors.accent.withValues(alpha: 0.2),
+                                  AppColors.accent.withValues(alpha: 0.1),
                                 ],
                               ),
-                              const SizedBox(height: 16),
-                              LinearProgressIndicator(
-                                value: achievements.isNotEmpty 
-                                    ? achievements.where((a) => a.isUnlocked).length / achievements.length
-                                    : 0.0,
-                                backgroundColor: AppColors.cardBackground,
-                                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accent),
-                                minHeight: 8,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: AppColors.accent.withValues(alpha: 0.3),
                               ),
-                              const SizedBox(height: 12),
-                              Row(
+                            ),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                  child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: const CustomText.subtitle(
+                                        text: 'Achievement Progress',
+                                        hasGlow: true,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Flexible(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.accent.withValues(alpha: 0.3),
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: CustomText.body(
+                                          text: achievements.isNotEmpty 
+                                              ? '${achievements.where((a) => a.isUnlocked).length}/${achievements.length}'
+                                              : 'Loading...',
+                                          color: AppColors.accent,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ),
+                                const SizedBox(height: 16),
+                                LinearProgressIndicator(
+                                  value: achievements.isNotEmpty 
+                                      ? achievements.where((a) => a.isUnlocked).length / achievements.length
+                                      : 0.0,
+                                  backgroundColor: AppColors.cardBackground,
+                                  valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accent),
+                                  minHeight: 8,
+                                ),
+                                const SizedBox(height: 12),
+                                Row(
                                 children: [
                                   Expanded(
                                     child: _buildQuickStat(
@@ -288,8 +318,9 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ]),

@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/shared/widgets/custom_elevated_button.dart';
 import '../../../../core/shared/widgets/custom_text.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/di/injection_container.dart';
+import '../../../../core/services/storage_service.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -17,7 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingPage> _pages = [
     OnboardingPage(
-      title: 'Welcome to Stake Games',
+      title: 'Welcome to Memory Games',
       subtitle: 'Premium gaming experience awaits you',
       description: 'Dive into the world of exciting games with amazing rewards and achievements',
       icon: Icons.games,
@@ -43,12 +45,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      context.go('/home');
+      _completeOnboarding();
     }
   }
 
   void _skipOnboarding() {
-    context.go('/home');
+    _completeOnboarding();
+  }
+
+  Future<void> _completeOnboarding() async {
+    final storageService = getIt<StorageService>();
+    await storageService.setOnboardingCompleted(true);
+    if (mounted) {
+      context.go('/home');
+    }
   }
 
   @override

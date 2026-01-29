@@ -19,6 +19,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
       'memory_game': 850,
       'number_puzzle': 650,
     },
+    currentStreak: 0,
+    longestStreak: 0,
+    totalChallengesCompleted: 0,
+    totalBonusContentViewed: 0,
   );
 
   final List<Achievement> _achievements = [
@@ -127,6 +131,22 @@ class ProfileRepositoryImpl implements ProfileRepository {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
     return _userProfile;
+  }
+
+  @override
+  Future<void> syncEngagementMetrics({
+    required int currentStreak,
+    required int longestStreak,
+    required int totalChallengesCompleted,
+    required int totalBonusContentViewed,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    _userProfile = _userProfile.copyWith(
+      currentStreak: currentStreak,
+      longestStreak: longestStreak,
+      totalChallengesCompleted: totalChallengesCompleted,
+      totalBonusContentViewed: totalBonusContentViewed,
+    );
   }
 
   @override

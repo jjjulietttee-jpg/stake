@@ -201,6 +201,147 @@ class ProfileStatsWidget extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 16),
+        
+        // Engagement Stats Section
+        const CustomText.subtitle(
+          text: 'Daily Engagement',
+          hasGlow: false,
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: CardWidget(
+                hasGlow: true,
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.local_fire_department,
+                      size: 32,
+                      color: AppColors.buttonRed,
+                    ),
+                    const SizedBox(height: 8),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.body(
+                        text: 'Current Streak',
+                        color: AppColors.buttonRed,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.subtitle(
+                        text: '${userProfile.currentStreak} days',
+                        hasGlow: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: CardWidget(
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.emoji_events,
+                      size: 32,
+                      color: AppColors.accent,
+                    ),
+                    const SizedBox(height: 8),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.body(
+                        text: 'Longest Streak',
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.subtitle(
+                        text: '${userProfile.longestStreak} days',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: CardWidget(
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.check_circle,
+                      size: 32,
+                      color: AppColors.accent,
+                    ),
+                    const SizedBox(height: 8),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.body(
+                        text: 'Challenges',
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.subtitle(
+                        text: userProfile.totalChallengesCompleted.toString(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: CardWidget(
+                child: Column(
+                  children: [
+                    const Icon(
+                      Icons.article,
+                      size: 32,
+                      color: AppColors.accent,
+                    ),
+                    const SizedBox(height: 8),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.body(
+                        text: 'Bonus Content',
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CustomText.subtitle(
+                        text: userProfile.totalBonusContentViewed.toString(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

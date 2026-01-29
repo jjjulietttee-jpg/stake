@@ -5,6 +5,9 @@ import '../../../../core/shared/widgets/custom_text.dart';
 import '../../../../core/shared/widgets/card_widget.dart';
 import '../../../../core/shared/widgets/custom_popup.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/di/injection_container.dart';
+import '../../../../core/services/storage_service.dart';
+import '../../../engagement/presentation/widgets/engagement_home_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,11 +24,27 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final storageService = getIt<StorageService>();
+    final savedName = await storageService.getPlayerName();
+    
+    if (mounted) {
+      setState(() {
+        _userName = savedName;
+        _showNamePopup = savedName == null || savedName.isEmpty;
+      });
+      
       if (_showNamePopup) {
-        _showUserNameDialog();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && _showNamePopup) {
+            _showUserNameDialog();
+          }
+        });
       }
-    });
+    }
   }
 
   void _showUserNameDialog() {
@@ -37,12 +56,21 @@ class _HomeScreenState extends State<HomeScreen> {
         subtitle: 'What should we call you?',
         hintText: 'Enter your name',
         confirmButtonText: 'Save',
-        onConfirm: (name) {
-          setState(() {
-            _userName = name;
-            _showNamePopup = false;
-          });
-          Navigator.of(context).pop();
+        onConfirm: (name) async {
+          if (name.isNotEmpty) {
+            final storageService = getIt<StorageService>();
+            await storageService.setPlayerName(name);
+            
+            if (mounted) {
+              setState(() {
+                _userName = name;
+                _showNamePopup = false;
+              });
+            }
+          }
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
         },
       ),
     );
@@ -75,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: AppColors.primaryDark.withValues(alpha: 0.9),
               flexibleSpace: FlexibleSpaceBar(
                 title: CustomText.subtitle(
-                  text: _userName != null ? 'Hello, $_userName!' : 'Stake Games',
+                  text: _userName != null ? 'Hello, $_userName!' : 'Memory Games',
                   hasGlow: true,
                 ),
                 background: Container(
@@ -205,6 +233,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 32),
                   
+                  // Daily Engagement section
+                  const EngagementHomeWidget(),
+                  const SizedBox(height: 32),
+                  
                   // Game categories
                   const CustomText.subtitle(
                     text: 'Game Categories',
@@ -313,13 +345,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 32),
                   
                   // Edit name button
-                  if (_userName != null)
-                    CustomElevatedButton(
-                      text: 'Change Name',
-                      backgroundColor: AppColors.cardBackground,
-                      onPressed: _showUserNameDialog,
-                      icon: Icons.edit,
-                    ),
+                  CustomElevatedButton(
+                    text: _userName != null ? 'Change Name' : 'Set Name',
+                    backgroundColor: AppColors.cardBackground,
+                    onPressed: _showUserNameDialog,
+                    icon: Icons.edit,
+                  ),
                 ]),
               ),
             ),

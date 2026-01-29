@@ -12,12 +12,11 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen>
-    with TickerProviderStateMixin {
+class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
-  
+
   bool _isGameStarted = false;
   int _score = 0;
   int _level = 1;
@@ -29,13 +28,9 @@ class _GameScreenState extends State<GameScreen>
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    _pulseAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.2,
-    ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
-    ));
+    _pulseAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
     _pulseController.repeat(reverse: true);
   }
 
@@ -117,7 +112,7 @@ class _GameScreenState extends State<GameScreen>
                 ),
               ),
             ),
-            
+
             // Game content
             SliverPadding(
               padding: const EdgeInsets.all(24),
@@ -132,12 +127,13 @@ class _GameScreenState extends State<GameScreen>
                     ),
                     const SizedBox(height: 16),
                     CustomText.body(
-                      text: 'This is a demo version of the game. Full version will be available in the next update.',
+                      text:
+                          'This is a demo version of the game. Full version will be available in the next update.',
                       textAlign: TextAlign.center,
                       color: AppColors.textPrimary.withValues(alpha: 0.8),
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Game preview card
                     CardWidget(
                       hasGlow: true,
@@ -177,7 +173,7 @@ class _GameScreenState extends State<GameScreen>
                       ),
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Start game button
                     CustomElevatedButton(
                       text: 'PLAY MEMORY GAME',
@@ -228,7 +224,7 @@ class _GameScreenState extends State<GameScreen>
                       ],
                     ),
                     const SizedBox(height: 32),
-                    
+
                     // Game area
                     CardWidget(
                       hasGlow: true,
@@ -248,7 +244,9 @@ class _GameScreenState extends State<GameScreen>
                                     gradient: RadialGradient(
                                       colors: [
                                         AppColors.accent.withValues(alpha: 0.5),
-                                        AppColors.buttonRed.withValues(alpha: 0.3),
+                                        AppColors.buttonRed.withValues(
+                                          alpha: 0.3,
+                                        ),
                                         Colors.transparent,
                                       ],
                                     ),
@@ -278,7 +276,7 @@ class _GameScreenState extends State<GameScreen>
                       ),
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // Game action button
                     CustomElevatedButton(
                       text: 'PLAY TURN',
@@ -289,7 +287,7 @@ class _GameScreenState extends State<GameScreen>
                       onPressed: _simulateGameAction,
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Stop game button
                     CustomElevatedButton(
                       text: 'END GAME',
@@ -301,16 +299,16 @@ class _GameScreenState extends State<GameScreen>
                       },
                     ),
                   ],
-                  
+
                   const SizedBox(height: 32),
-                  
+
                   // Game features
                   const CustomText.subtitle(
                     text: 'Game Features',
                     hasGlow: false,
                   ),
                   const SizedBox(height: 16),
-                  
+
                   CardWidget(
                     child: Row(
                       children: [
@@ -341,7 +339,7 @@ class _GameScreenState extends State<GameScreen>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  
+
                   CardWidget(
                     child: Row(
                       children: [

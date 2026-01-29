@@ -7,12 +7,26 @@ import 'features/profile/presentation/screens/profile_screen.dart';
 import 'features/profile/presentation/screens/achievements_screen.dart';
 import 'features/memory_game/presentation/screens/memory_game_screen.dart';
 import 'features/memory_game/presentation/bloc/memory_game_bloc.dart';
+import 'features/engagement/presentation/screens/daily_challenge_screen.dart';
+import 'features/engagement/presentation/screens/daily_bonus_screen.dart';
+import 'features/engagement/presentation/bloc/daily_challenge_bloc.dart';
+import 'features/engagement/presentation/bloc/daily_bonus_bloc.dart';
+import 'features/splash/presentation/screens/splash_screen.dart';
+import 'features/splash/presentation/bloc/splash_bloc.dart';
 import 'core/di/injection_container.dart' as di;
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/onboarding',
+  initialLocation: '/splash',
   debugLogDiagnostics: true,
   routes: [
+    GoRoute(
+      path: '/splash',
+      name: 'splash',
+      builder: (context, state) => BlocProvider(
+        create: (context) => di.sl<SplashBloc>(),
+        child: const SplashScreen(),
+      ),
+    ),
     GoRoute(
       path: '/onboarding',
       name: 'onboarding',
@@ -44,6 +58,23 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => BlocProvider(
         create: (context) => di.sl<MemoryGameBloc>(),
         child: const MemoryGameScreen(),
+      ),
+    ),
+    // Engagement feature routes
+    GoRoute(
+      path: '/daily-challenge',
+      name: 'daily-challenge',
+      builder: (context, state) => BlocProvider(
+        create: (context) => di.sl<DailyChallengeBloc>(),
+        child: const DailyChallengeScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/daily-bonus',
+      name: 'daily-bonus',
+      builder: (context, state) => BlocProvider(
+        create: (context) => di.sl<DailyBonusBloc>(),
+        child: const DailyBonusScreen(),
       ),
     ),
   ],

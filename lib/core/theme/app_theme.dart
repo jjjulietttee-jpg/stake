@@ -13,16 +13,22 @@ class AppColors {
 class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
+      useMaterial3: false,
       brightness: Brightness.dark,
       primaryColor: AppColors.primaryDark,
       scaffoldBackgroundColor: AppColors.primaryDark,
+      canvasColor: AppColors.primaryDark,
+      cardColor: AppColors.cardBackground,
       colorScheme: const ColorScheme.dark(
+        brightness: Brightness.dark,
         primary: AppColors.accent,
         secondary: AppColors.secondaryDark,
         surface: AppColors.cardBackground,
+        background: AppColors.primaryDark,
         onPrimary: AppColors.textPrimary,
         onSecondary: AppColors.textPrimary,
         onSurface: AppColors.textPrimary,
+        onBackground: AppColors.textPrimary,
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
