@@ -2,7 +2,7 @@ name: stake
 description: "Memory Games - Premium Gaming Experience"
 publish_to: 'none'
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: ^3.10.7
@@ -27,3 +27,4 @@ flutter:
   
   assets:
     - assets/images/
+    - assets/app_icons/
