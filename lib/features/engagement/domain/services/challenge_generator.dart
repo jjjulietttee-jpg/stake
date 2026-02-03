@@ -129,15 +129,15 @@ class ChallengeGenerator {
     DateTime date,
     Random random,
   ) {
-    final games = ['Memory Game', 'any game'];
-    final selectedGame = games[random.nextInt(games.length)];
+    final trainingModes = ['Memory Card Exercise', 'Puzzle Exercise'];
+    final selectedMode = trainingModes[random.nextInt(trainingModes.length)];
     
     return DailyChallenge(
       id: id,
       title: 'Perfection',
-      description: 'Complete $selectedGame without mistakes',
+      description: 'Complete $selectedMode without mistakes',
       type: ChallengeType.perfectGame,
-      parameters: {'gameType': selectedGame},
+      parameters: {'trainingMode': selectedMode},
       date: date,
       isCompleted: false,
       rewards: [

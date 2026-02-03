@@ -79,7 +79,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               ),
               flexibleSpace: FlexibleSpaceBar(
                 title: const CustomText.subtitle(
-                  text: 'Game Zone',
+                  text: 'Training Modes',
                   hasGlow: true,
                 ),
                 background: Container(
@@ -119,22 +119,22 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   if (!_isGameStarted) ...[
-                    // Game preview
+                    // Training mode selection
                     const CustomText.title(
-                      text: 'Ready for Adventure?',
+                      text: 'Select Training Mode',
                       textAlign: TextAlign.center,
                       hasGlow: true,
                     ),
                     const SizedBox(height: 16),
                     CustomText.body(
                       text:
-                          'This is a demo version of the game. Full version will be available in the next update.',
+                          'All training modes are built into this app. Choose an exercise to improve your memory.',
                       textAlign: TextAlign.center,
                       color: AppColors.textPrimary.withValues(alpha: 0.8),
                     ),
                     const SizedBox(height: 32),
 
-                    // Game preview card
+                    // Training mode card
                     CardWidget(
                       hasGlow: true,
                       onTap: () => context.push('/memory-game'),
@@ -160,12 +160,12 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           ),
                           const SizedBox(height: 16),
                           const CustomText.subtitle(
-                            text: 'Memory Game',
+                            text: 'Memory Card Exercise',
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 8),
                           CustomText.body(
-                            text: 'Test your memory with card matching',
+                            text: 'Match pairs to train your memory',
                             textAlign: TextAlign.center,
                             color: AppColors.textPrimary.withValues(alpha: 0.7),
                           ),
@@ -174,9 +174,9 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                     ),
                     const SizedBox(height: 32),
 
-                    // Start game button
+                    // Start training button
                     CustomElevatedButton(
-                      text: 'PLAY MEMORY GAME',
+                      text: 'START TRAINING',
                       backgroundColor: AppColors.buttonRed,
                       height: 80,
                       icon: Icons.psychology,

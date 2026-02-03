@@ -195,19 +195,19 @@ class MemoryGameScreen extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             const CustomText.title(
-              text: 'Memory Challenge',
+              text: 'Memory Card Exercise',
               textAlign: TextAlign.center,
               hasGlow: true,
             ),
             const SizedBox(height: 16),
             const CustomText.body(
-              text: 'Test your memory by matching pairs of cards. Flip two cards at a time and try to remember their positions!',
+              text: 'This training mode is built into the app. Match pairs of cards to improve your memory skills.',
               textAlign: TextAlign.center,
               color: AppColors.textPrimary,
             ),
             const SizedBox(height: 32),
             CustomElevatedButton(
-              text: 'Start Game',
+              text: 'Start Exercise',
               backgroundColor: AppColors.accent,
               textColor: AppColors.primaryDark,
               height: 60,

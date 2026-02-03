@@ -20,21 +20,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingPage> _pages = [
     OnboardingPage(
       title: 'Welcome to Memory Games',
-      subtitle: 'Premium gaming experience awaits you',
-      description: 'Dive into the world of exciting games with amazing rewards and achievements',
-      icon: Icons.games,
+      subtitle: 'Memory training application',
+      description: 'Improve your memory and cognitive skills with built-in training exercises',
+      icon: Icons.psychology,
     ),
     OnboardingPage(
-      title: 'Play and Win',
-      subtitle: 'Multiple exciting games',
-      description: 'Puzzles, arcade games, strategy games and much more in one app',
-      icon: Icons.sports_esports,
+      title: 'Training Modes',
+      subtitle: 'Built-in exercises',
+      description: 'All training modes are embedded in the app - memory card matching, puzzles, and cognitive exercises',
+      icon: Icons.fitness_center,
     ),
     OnboardingPage(
-      title: 'Start Right Now',
-      subtitle: 'Your adventure begins here',
-      description: 'Create your profile and get a welcome bonus for registration',
-      icon: Icons.rocket_launch,
+      title: 'Start Training',
+      subtitle: 'All exercises are built-in',
+      description: 'Create your profile and start improving your memory with embedded training exercises',
+      icon: Icons.fitness_center,
     ),
   ];
 

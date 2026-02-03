@@ -7,7 +7,6 @@ import '../../../../core/shared/widgets/custom_popup.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/services/storage_service.dart';
-import '../../../engagement/presentation/widgets/engagement_home_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -145,13 +144,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 delegate: SliverChildListDelegate([
                   // Welcome section
                   const CustomText.title(
-                    text: 'Ready to Play?',
+                    text: 'Memory Games',
                     textAlign: TextAlign.center,
                     hasGlow: true,
                   ),
                   const SizedBox(height: 12),
                   CustomText.body(
-                    text: 'Choose a game and start winning right now!',
+                    text: 'Train your memory with built-in memory training exercises',
                     textAlign: TextAlign.center,
                     color: AppColors.textPrimary.withValues(alpha: 0.8),
                   ),
@@ -159,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                   // Main play button
                   CustomElevatedButton(
-                    text: 'PLAY NOW',
+                    text: 'START TRAINING',
                     backgroundColor: AppColors.buttonRed,
                     height: 80,
                     icon: Icons.play_arrow,
@@ -230,117 +229,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 32),
-                  
-                  // Daily Engagement section
-                  const EngagementHomeWidget(),
-                  const SizedBox(height: 32),
-                  
-                  // Game categories
-                  const CustomText.subtitle(
-                    text: 'Game Categories',
-                    hasGlow: false,
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  CardWidget(
-                    onTap: () => context.push('/game'),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            gradient: RadialGradient(
-                              colors: [
-                                AppColors.buttonRed.withValues(alpha: 0.3),
-                                Colors.transparent,
-                              ],
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.extension,
-                            size: 32,
-                            color: AppColors.buttonRed,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText.body(
-                                text: 'Puzzle Games',
-                                fontWeight: FontWeight.bold,
-                              ),
-                              SizedBox(height: 4),
-                              CustomText(
-                                text: 'Classic and modern puzzle games',
-                                fontSize: 14,
-                                color: AppColors.textPrimary,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.accent,
-                          size: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  CardWidget(
-                    onTap: () => context.push('/game'),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            gradient: RadialGradient(
-                              colors: [
-                                AppColors.accent.withValues(alpha: 0.3),
-                                Colors.transparent,
-                              ],
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.sports_esports,
-                            size: 32,
-                            color: AppColors.accent,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText.body(
-                                text: 'Arcade Games',
-                                fontWeight: FontWeight.bold,
-                              ),
-                              SizedBox(height: 4),
-                              CustomText(
-                                text: 'Action-packed arcade adventures',
-                                fontSize: 14,
-                                color: AppColors.textPrimary,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Icon(
-                          Icons.arrow_forward_ios,
-                          color: AppColors.accent,
-                          size: 20,
-                        ),
-                      ],
-                    ),
                   ),
                   const SizedBox(height: 32),
                   
