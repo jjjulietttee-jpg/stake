@@ -128,6 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               actions: [
                 IconButton(
+                  onPressed: () => context.push('/settings'),
+                  icon: const Icon(
+                    Icons.settings,
+                    color: AppColors.accent,
+                    size: 28,
+                  ),
+                ),
+                IconButton(
                   onPressed: () => context.push('/profile'),
                   icon: const Icon(
                     Icons.person,
@@ -205,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: CardWidget(
                           hasGlow: true,
-                          onTap: () => context.push('/profile'),
+                          onTap: () => context.push('/achievements'),
                           child: Column(
                             children: [
                               Icon(
@@ -222,6 +230,64 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(height: 12),
                               const CustomText.body(
                                 text: 'Achievements',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CardWidget(
+                          hasGlow: true,
+                          onTap: () => context.push('/settings'),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.settings,
+                                size: 48,
+                                color: AppColors.accent,
+                                shadows: [
+                                  Shadow(
+                                    color: AppColors.accent.withValues(alpha: 0.5),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              const CustomText.body(
+                                text: 'Settings',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: CardWidget(
+                          hasGlow: true,
+                          onTap: () => context.push('/daily-challenge'),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                size: 48,
+                                color: AppColors.accent,
+                                shadows: [
+                                  Shadow(
+                                    color: AppColors.accent.withValues(alpha: 0.5),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              const CustomText.body(
+                                text: 'Daily Challenge',
                                 textAlign: TextAlign.center,
                               ),
                             ],

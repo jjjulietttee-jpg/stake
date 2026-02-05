@@ -5,6 +5,7 @@ import 'features/home/presentation/screens/home_screen.dart';
 import 'features/game/presentation/screens/game_screen.dart';
 import 'features/profile/presentation/screens/profile_screen.dart';
 import 'features/profile/presentation/screens/achievements_screen.dart';
+import 'features/settings/presentation/screens/settings_screen.dart';
 import 'features/memory_game/presentation/screens/memory_game_screen.dart';
 import 'features/memory_game/presentation/bloc/memory_game_bloc.dart';
 import 'features/engagement/presentation/screens/daily_challenge_screen.dart';
@@ -51,6 +52,11 @@ final GoRouter appRouter = GoRouter(
       path: '/achievements',
       name: 'achievements',
       builder: (context, state) => const AchievementsScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      name: 'settings',
+      builder: (context, state) => const SettingsScreen(),
     ),
     GoRoute(
       path: '/memory-game',

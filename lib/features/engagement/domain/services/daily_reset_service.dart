@@ -173,7 +173,7 @@ class DailyResetService {
         date1.day == date2.day;
   }
 
-  /// Force reset for testing purposes
+  /// Force daily reset manually
   Future<void> forceReset() async {
     await performDailyReset();
   }

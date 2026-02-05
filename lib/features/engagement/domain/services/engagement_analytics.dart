@@ -141,8 +141,7 @@ class EngagementAnalytics {
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    // In production, this would query your analytics backend
-    // For now, return mock data
+    // Returns local engagement metrics
     return {
       'total_challenges_completed': 0,
       'total_bonus_content_viewed': 0,

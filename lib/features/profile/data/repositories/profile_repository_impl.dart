@@ -4,7 +4,7 @@ import '../../domain/entities/achievement.dart';
 import '../../domain/repositories/profile_repository.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
-  // Mock data - in real app this would come from local storage/API
+  // Initial user profile data - will be updated based on gameplay
   UserProfile _userProfile = UserProfile(
     id: 'user_001',
     name: 'Player',

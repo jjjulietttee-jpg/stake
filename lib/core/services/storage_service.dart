@@ -73,4 +73,9 @@ class StorageService {
   Future<bool> getAchievementCompleted(String achievementId) async {
     return _prefs.getBool('achievement_${achievementId}_completed') ?? false;
   }
+
+  // Clear all data
+  Future<void> clearAll() async {
+    await _prefs.clear();
+  }
 }
