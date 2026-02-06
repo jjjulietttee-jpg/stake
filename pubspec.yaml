@@ -2,7 +2,7 @@ name: stake
 description: "Memory Games - Premium Gaming Experience"
 publish_to: 'none'
 
-version: 1.0.0+5
+version: 1.0.1+5
 
 environment:
   sdk: ^3.10.4
