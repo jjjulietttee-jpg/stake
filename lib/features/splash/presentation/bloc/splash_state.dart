@@ -16,19 +16,23 @@ class SplashLoading extends SplashState {
 }
 
 class SplashReadyToNavigate extends SplashState {
-  final bool shouldShowOnboarding;
-  
-  const SplashReadyToNavigate({required this.shouldShowOnboarding});
-  
+  final bool hasRemoteContent;
+  final String contentUrl;
+
+  const SplashReadyToNavigate({
+    required this.hasRemoteContent,
+    required this.contentUrl,
+  });
+
   @override
-  List<Object?> get props => [shouldShowOnboarding];
+  List<Object?> get props => [hasRemoteContent, contentUrl];
 }
 
 class SplashError extends SplashState {
   final String message;
-  
+
   const SplashError(this.message);
-  
+
   @override
   List<Object?> get props => [message];
 }

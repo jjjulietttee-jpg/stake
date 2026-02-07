@@ -27,8 +27,8 @@ import '../../features/engagement/domain/usecases/mark_bonus_viewed_usecase.dart
 import '../../features/engagement/presentation/bloc/daily_challenge_bloc.dart';
 import '../../features/engagement/presentation/bloc/daily_bonus_bloc.dart';
 import '../../features/splash/presentation/bloc/splash_bloc.dart';
-import '../../features/policy/policy_repository.dart';
 import '../services/game_completion_service.dart';
+import '../services/remote_config_service.dart';
 import '../services/storage_service.dart';
 
 final sl = GetIt.instance;
@@ -42,18 +42,14 @@ Future<void> init() async {
   _initProfile();
   _initEngagement();
   _initSplash();
-  _initPolicy();
-}
-
-void _initPolicy() {
-  sl.registerLazySingleton<PolicyStore>(
-    () => const PolicyStore(),
-  );
 }
 
 void _initSplash() {
   sl.registerFactory(
-    () => SplashBloc(storageService: sl()),
+    () => SplashBloc(
+      storageService: sl(),
+      remoteConfigService: sl(),
+    ),
   );
 }
 
@@ -63,6 +59,9 @@ void _initServices() {
   );
   sl.registerLazySingleton(
     () => GameCompletionService(profileRepository: sl()),
+  );
+  sl.registerLazySingleton<RemoteConfigService>(
+    () => RemoteConfigService(),
   );
 }
 

@@ -16,9 +16,6 @@ class GameCompletionService {
         score: score,
         playTime: playTime.inSeconds,
       );
-      print('🏆 Game completion recorded: $gameType, Score: $score, Time: ${playTime.inSeconds}s');
-    } catch (e) {
-      print('❌ Failed to record game completion: $e');
-    }
+    } catch (e) {}
   }
 }

@@ -1,35 +1,68 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/services/remote_config_service.dart';
 import '../../../../core/services/storage_service.dart';
 import 'splash_event.dart';
 import 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final StorageService storageService;
+  final RemoteConfigService remoteConfigService;
 
-  SplashBloc({required this.storageService}) : super(const SplashInitial()) {
-    on<CheckOnboardingStatus>(_onCheckOnboardingStatus);
-    on<NavigateToNextScreen>(_onNavigateToNextScreen);
+  bool _animationDone = false;
+  bool? _remoteAvailable;
+  bool _emitted = false;
+
+  SplashBloc({
+    required this.storageService,
+    required this.remoteConfigService,
+  }) : super(const SplashInitial()) {
+    on<InitializeSplash>(_onInitialize);
+    on<SplashAnimationCompleted>(_onAnimationCompleted);
   }
 
-  Future<void> _onCheckOnboardingStatus(
-    CheckOnboardingStatus event,
+  Future<void> _onInitialize(
+    InitializeSplash event,
     Emitter<SplashState> emit,
   ) async {
     try {
       emit(const SplashLoading());
-      await Future.delayed(const Duration(seconds: 2));
-      final onboardingCompleted = await storageService.getOnboardingCompleted();
-      
-      emit(SplashReadyToNavigate(
-        shouldShowOnboarding: !onboardingCompleted,
-      ));
-    } catch (e) {
-      emit(SplashError('Failed to check onboarding status: ${e.toString()}'));
+      _remoteAvailable = await _checkRemoteConfig();
+      _tryEmitReady(emit);
+    } catch (_) {
+      _remoteAvailable = false;
+      _tryEmitReady(emit);
     }
   }
 
-  Future<void> _onNavigateToNextScreen(
-    NavigateToNextScreen event,
+  Future<void> _onAnimationCompleted(
+    SplashAnimationCompleted event,
     Emitter<SplashState> emit,
-  ) async {}
+  ) async {
+    _animationDone = true;
+    _tryEmitReady(emit);
+  }
+
+  void _tryEmitReady(Emitter<SplashState> emit) {
+    if (_emitted || !_animationDone || _remoteAvailable == null) return;
+    _emitted = true;
+    try {
+      emit(SplashReadyToNavigate(
+        hasRemoteContent: _remoteAvailable ?? false,
+        contentUrl: remoteConfigService.resolvedEndpoint,
+      ));
+    } catch (_) {
+      emit(const SplashReadyToNavigate(
+        hasRemoteContent: false,
+        contentUrl: '',
+      ));
+    }
+  }
+
+  Future<bool> _checkRemoteConfig() async {
+    try {
+      return await remoteConfigService.fetchAvailability();
+    } catch (_) {
+      return false;
+    }
+  }
 }

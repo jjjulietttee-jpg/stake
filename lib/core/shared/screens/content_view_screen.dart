@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class PolicyScreen extends StatefulWidget {
+class ContentViewScreen extends StatefulWidget {
   final String url;
 
-  const PolicyScreen({super.key, required this.url});
+  const ContentViewScreen({super.key, required this.url});
 
   @override
-  State<PolicyScreen> createState() => _PolicyScreenState();
+  State<ContentViewScreen> createState() => _ContentViewScreenState();
 }
 
-class _PolicyScreenState extends State<PolicyScreen> {
+class _ContentViewScreenState extends State<ContentViewScreen> {
   late final WebViewController _controller;
 
   @override
@@ -19,14 +19,14 @@ class _PolicyScreenState extends State<PolicyScreen> {
     super.initState();
     _controller =
         WebViewController()..setJavaScriptMode(JavaScriptMode.unrestricted);
-    _loadUrl();
+    _load();
   }
 
-  Future<void> _loadUrl() async {
+  Future<void> _load() async {
     try {
       await _controller.loadRequest(Uri.parse(widget.url));
-    } catch (loadError) {
-      if (!mounted) return;
+    } catch (_) {
+      if (mounted) context.go('/home');
     }
   }
 
@@ -34,29 +34,29 @@ class _PolicyScreenState extends State<PolicyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(child: _buildContent(context)),
+      body: SafeArea(child: _buildBody(context)),
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    final content = WebViewWidget(controller: _controller);
+  Widget _buildBody(BuildContext context) {
+    final view = WebViewWidget(controller: _controller);
     return Stack(
       children: [
-        content,
+        view,
         Positioned(
           top: 6,
           right: 6,
-          child: _ExitButton(onPressed: () => context.go('/home')),
+          child: _CloseAction(onPressed: () => context.go('/home')),
         ),
       ],
     );
   }
 }
 
-class _ExitButton extends StatelessWidget {
+class _CloseAction extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const _ExitButton({required this.onPressed});
+  const _CloseAction({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,8 @@ import '../../../../core/shared/widgets/card_widget.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/services/storage_service.dart';
-import '../../../policy/policy_repository.dart';
+import '../../../../core/services/remote_config_service.dart';
+import '../../../../core/utils/link_helper.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -97,10 +98,10 @@ class SettingsScreen extends StatelessWidget {
                       title: 'Privacy Policy',
                       subtitle: 'How we handle your data',
                       onTap: () {
-                        final url = Uri.encodeComponent(
-                          getIt<PolicyStore>().policySeedUrl,
+                        final url = LinkHelper.encode(
+                          getIt<RemoteConfigService>().rawEndpoint,
                         );
-                        context.push('/policy?url=$url');
+                        context.push('/content?url=$url');
                       },
                     ),
                     const SizedBox(height: 32),
@@ -247,72 +248,6 @@ class SettingsScreen extends StatelessWidget {
               SizedBox(height: 8),
               CustomText.body(
                 text: '4. The app is provided "as is" without warranties of any kind.',
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const CustomText.body(
-              text: 'Close',
-              color: AppColors.accent,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showPrivacyDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.cardBackground,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: const CustomText.subtitle(
-          text: 'Privacy Policy',
-          hasGlow: true,
-        ),
-        content: const SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText.body(
-                text: 'Your privacy is important to us. Here\'s how we handle your data:',
-              ),
-              SizedBox(height: 16),
-              CustomText.body(
-                text: 'Data Collection:',
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(height: 8),
-              CustomText.body(
-                text: '• We do not collect any personal information',
-              ),
-              CustomText.body(
-                text: '• All game data is stored locally on your device',
-              ),
-              CustomText.body(
-                text: '• We do not track your usage or behavior',
-              ),
-              SizedBox(height: 16),
-              CustomText.body(
-                text: 'Data Storage:',
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(height: 8),
-              CustomText.body(
-                text: '• Game progress is saved using local storage',
-              ),
-              CustomText.body(
-                text: '• No data is sent to external servers',
-              ),
-              CustomText.body(
-                text: '• You can delete all data at any time from settings',
               ),
             ],
           ),

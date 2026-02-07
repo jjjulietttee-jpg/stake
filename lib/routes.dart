@@ -15,7 +15,7 @@ import 'features/engagement/presentation/bloc/daily_challenge_bloc.dart';
 import 'features/engagement/presentation/bloc/daily_bonus_bloc.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 import 'features/splash/presentation/bloc/splash_bloc.dart';
-import 'features/policy/presentation/screens/policy_screen.dart';
+import 'core/shared/screens/content_view_screen.dart';
 import 'core/di/injection_container.dart' as di;
 
 final GoRouter appRouter = GoRouter(
@@ -30,12 +30,11 @@ final GoRouter appRouter = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/policy',
-      name: 'policy',
+      path: '/content',
+      name: 'content',
       pageBuilder: (context, state) {
-        final url = state.uri.queryParameters['url'] ??
-            'https://world.openfoodfacts.org';
-        return _buildPolicyPage(state, PolicyScreen(url: url));
+        final url = state.uri.queryParameters['url'] ?? '';
+        return _buildContentPage(state, ContentViewScreen(url: url));
       },
     ),
     GoRoute(
@@ -95,12 +94,12 @@ final GoRouter appRouter = GoRouter(
   ],
 );
 
-CustomTransitionPage<PolicyScreen> _buildPolicyPage(
+CustomTransitionPage<ContentViewScreen> _buildContentPage(
   GoRouterState state,
-  PolicyScreen child,
+  ContentViewScreen child,
 ) {
   const duration = Duration(milliseconds: 250);
-  return CustomTransitionPage<PolicyScreen>(
+  return CustomTransitionPage<ContentViewScreen>(
     key: state.pageKey,
     child: child,
     transitionDuration: duration,

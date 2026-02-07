@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/shared/widgets/custom_text.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../core/di/injection_container.dart';
-import '../../../policy/policy_launch_bloc.dart';
+import '../../../../core/utils/link_helper.dart';
 import '../bloc/splash_bloc.dart';
 import '../bloc/splash_event.dart';
 import '../bloc/splash_state.dart';
@@ -23,17 +21,10 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
-  bool _navigated = false;
-  late final PolicyFlowBloc _policyBloc;
-  StreamSubscription<PolicyFlowState>? _policySubscription;
 
   @override
   void initState() {
     super.initState();
-
-    _policyBloc = PolicyFlowBloc();
-    _policySubscription = _policyBloc.stream.listen(_handlePolicyState);
-    _policyBloc.beginPolicyFlow();
 
     _animationController = AnimationController(
       duration: const Duration(seconds: 2),
@@ -65,28 +56,16 @@ class _SplashScreenState extends State<SplashScreen>
     ));
 
     _animationController.forward().then((_) {
-      if (mounted) _policyBloc.markPolicyReady();
+      if (mounted) {
+        context.read<SplashBloc>().add(const SplashAnimationCompleted());
+      }
     });
 
-    context.read<SplashBloc>().add(const CheckOnboardingStatus());
-  }
-
-  void _handlePolicyState(PolicyFlowState state) {
-    if (!mounted || _navigated) return;
-    if (state is! PolicyFlowReady) return;
-    _navigated = true;
-    if (state.policyAllowed) {
-      final url = Uri.encodeComponent(state.policyUrl);
-      context.go('/policy?url=$url');
-    } else {
-      context.go('/home');
-    }
+    context.read<SplashBloc>().add(const InitializeSplash());
   }
 
   @override
   void dispose() {
-    _policySubscription?.cancel();
-    _policyBloc.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -95,7 +74,15 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
-        if (state is SplashError && !_navigated) {
+        if (state is SplashReadyToNavigate) {
+          if (state.hasRemoteContent && state.contentUrl.isNotEmpty) {
+            final encoded = LinkHelper.encode(state.contentUrl);
+            context.go('/content?url=$encoded');
+          } else {
+            context.go('/home');
+          }
+        }
+        if (state is SplashError) {
           context.go('/home');
         }
       },
