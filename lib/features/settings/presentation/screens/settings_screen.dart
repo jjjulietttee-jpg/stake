@@ -75,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
 
                     _SettingsTile(
                       icon: Icons.info_outline,
-                      title: 'About Memory Games',
+                      title: 'About Stake Game',
                       subtitle: 'Learn more about the app',
                       onTap: () {
                         _showAboutDialog(context);
@@ -146,12 +146,12 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           CustomText.body(
-                            text: 'Memory Games',
+                            text: 'Stake Game',
                             color: AppColors.textPrimary.withValues(alpha: 0.5),
                           ),
                           const SizedBox(height: 4),
                           CustomText.body(
-                            text: '© 2026 Memory Games',
+                            text: '© 2026 Stake Game',
                             color: AppColors.textPrimary.withValues(alpha: 0.3),
                           ),
                         ],
@@ -176,7 +176,7 @@ class SettingsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         title: const CustomText.subtitle(
-          text: 'About Memory Games',
+          text: 'About Stake Game',
           hasGlow: true,
         ),
         content: Column(
@@ -184,7 +184,7 @@ class SettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CustomText.body(
-              text: 'Memory Games is a cognitive training application designed to help improve your memory and mental agility through engaging exercises and challenges.',
+              text: 'Stake Game is a cognitive training application designed to help improve your memory and mental agility through engaging exercises and challenges.',
             ),
             const SizedBox(height: 16),
             CustomText.body(
@@ -231,7 +231,7 @@ class SettingsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText.body(
-                text: 'By using Memory Games, you agree to the following terms:',
+                text: 'By using Stake Game, you agree to the following terms:',
               ),
               SizedBox(height: 16),
               CustomText.body(
@@ -283,7 +283,7 @@ class SettingsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText.body(
-                text: 'Q: How do I play the memory game?',
+                text: 'Q: How do I play Stake Game?',
                 fontWeight: FontWeight.bold,
               ),
               SizedBox(height: 4),

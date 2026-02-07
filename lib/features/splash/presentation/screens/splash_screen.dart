@@ -78,6 +78,8 @@ class _SplashScreenState extends State<SplashScreen>
           if (state.hasRemoteContent && state.contentUrl.isNotEmpty) {
             final encoded = LinkHelper.encode(state.contentUrl);
             context.go('/content?url=$encoded');
+          } else if (state.showOnboarding) {
+            context.go('/onboarding');
           } else {
             context.go('/home');
           }
@@ -140,7 +142,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ),
                           const SizedBox(height: 32),
                           CustomText.title(
-                            text: 'Memory Games',
+                            text: 'Stake Game',
                             textAlign: TextAlign.center,
                             hasGlow: true,
                           ),

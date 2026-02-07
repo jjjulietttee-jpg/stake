@@ -101,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: AppColors.primaryDark.withValues(alpha: 0.9),
               flexibleSpace: FlexibleSpaceBar(
                 title: CustomText.subtitle(
-                  text: _userName != null ? 'Hello, $_userName!' : 'Memory Games',
+                  text: _userName != null ? 'Hello, $_userName!' : 'Stake Game',
                   hasGlow: true,
                 ),
                 background: Container(
@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   const CustomText.title(
-                    text: 'Memory Games',
+                    text: 'Stake Game',
                     textAlign: TextAlign.center,
                     hasGlow: true,
                   ),

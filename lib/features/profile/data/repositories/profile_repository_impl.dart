@@ -41,7 +41,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     Achievement(
       id: 'memory_master',
       title: 'Memory Master',
-      description: 'Score 500+ points in Memory Game',
+      description: 'Score 500+ points in Stake Game',
       icon: Icons.psychology,
       type: AchievementType.scoreBasedMilestone,
       rarity: AchievementRarity.rare,
@@ -54,7 +54,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     Achievement(
       id: 'speed_demon',
       title: 'Speed Demon',
-      description: 'Complete Memory Game in under 30 seconds',
+      description: 'Complete Stake Game in under 30 seconds',
       icon: Icons.flash_on,
       type: AchievementType.speedRun,
       rarity: AchievementRarity.epic,
@@ -66,7 +66,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     Achievement(
       id: 'perfect_memory',
       title: 'Perfect Memory',
-      description: 'Complete Memory Game without mistakes',
+      description: 'Complete Stake Game without mistakes',
       icon: Icons.star,
       type: AchievementType.perfectGame,
       rarity: AchievementRarity.epic,

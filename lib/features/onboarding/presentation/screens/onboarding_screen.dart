@@ -19,7 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingPage> _pages = [
     OnboardingPage(
-      title: 'Welcome to Memory Games',
+      title: 'Welcome to Stake Game',
       subtitle: 'Memory training application',
       description: 'Improve your memory and cognitive skills with built-in training exercises',
       icon: Icons.psychology,

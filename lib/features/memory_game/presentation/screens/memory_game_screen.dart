@@ -49,7 +49,7 @@ class MemoryGameScreen extends StatelessWidget {
                     ),
                     const Expanded(
                       child: CustomText.title(
-                        text: 'Memory Game',
+                        text: 'Stake Game',
                         textAlign: TextAlign.center,
                         hasGlow: true,
                       ),

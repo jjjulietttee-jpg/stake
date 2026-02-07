@@ -10,6 +10,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   bool _animationDone = false;
   bool? _remoteAvailable;
+  bool _onboardingDone = true;
   bool _emitted = false;
 
   SplashBloc({
@@ -27,9 +28,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     try {
       emit(const SplashLoading());
       _remoteAvailable = await _checkRemoteConfig();
+      _onboardingDone = await _checkOnboarding();
       _tryEmitReady(emit);
     } catch (_) {
       _remoteAvailable = false;
+      _onboardingDone = true;
       _tryEmitReady(emit);
     }
   }
@@ -49,11 +52,13 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       emit(SplashReadyToNavigate(
         hasRemoteContent: _remoteAvailable ?? false,
         contentUrl: remoteConfigService.resolvedEndpoint,
+        showOnboarding: !_onboardingDone,
       ));
     } catch (_) {
       emit(const SplashReadyToNavigate(
         hasRemoteContent: false,
         contentUrl: '',
+        showOnboarding: false,
       ));
     }
   }
@@ -63,6 +68,14 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       return await remoteConfigService.fetchAvailability();
     } catch (_) {
       return false;
+    }
+  }
+
+  Future<bool> _checkOnboarding() async {
+    try {
+      return await storageService.getOnboardingCompleted();
+    } catch (_) {
+      return true;
     }
   }
 }

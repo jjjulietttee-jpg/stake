@@ -50,7 +50,7 @@ class BonusContentProvider {
   ) {
     final tips = [
       {
-        'title': 'Memory Game Mastery',
+        'title': 'Stake Game Mastery',
         'content': 'Focus on creating mental patterns when memorizing card positions. Group cards by color or position to improve your recall speed.',
       },
       {
@@ -99,19 +99,19 @@ class BonusContentProvider {
       },
       {
         'title': 'Brain Training',
-        'content': 'Playing memory games for just 15 minutes a day can improve your working memory and cognitive flexibility within weeks.',
+        'content': 'Playing for just 15 minutes a day can improve your working memory and cognitive flexibility within weeks.',
       },
       {
         'title': 'Ancient Origins',
-        'content': 'Memory games date back to ancient Greece, where scholars used memory palaces to remember vast amounts of information.',
+        'content': 'Brain training dates back to ancient Greece, where scholars used memory palaces to remember vast amounts of information.',
       },
       {
         'title': 'Neuroplasticity',
-        'content': 'Your brain creates new neural pathways every time you play memory games, literally rewiring itself to become more efficient.',
+        'content': 'Your brain creates new neural pathways every time you play, literally rewiring itself to become more efficient.',
       },
       {
         'title': 'Sleep Connection',
-        'content': 'Playing memory games before bed can improve memory consolidation during sleep, helping you remember things better the next day.',
+        'content': 'Playing before bed can improve memory consolidation during sleep, helping you remember things better the next day.',
       },
       {
         'title': 'Age is Just a Number',
@@ -139,7 +139,7 @@ class BonusContentProvider {
     final achievements = [
       {
         'title': 'Speed Demon Challenge',
-        'content': 'Complete a Memory Game in under 30 seconds to unlock the Speed Demon achievement. Focus on quick pattern recognition!',
+        'content': 'Complete a game in under 30 seconds to unlock the Speed Demon achievement. Focus on quick pattern recognition!',
       },
       {
         'title': 'Perfect Memory Goal',
