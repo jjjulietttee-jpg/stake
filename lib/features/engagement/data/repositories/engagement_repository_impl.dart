@@ -18,7 +18,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
       final challengeModel = await localDataSource.getTodaysChallenge();
       return challengeModel?.toEntity();
     } catch (e) {
-      // Log error in production app
       return null;
     }
   }
@@ -28,7 +27,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
     try {
       await localDataSource.markChallengeCompleted(challengeId);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
@@ -39,7 +37,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
       final contentModels = await localDataSource.getTodaysBonusContent();
       return contentModels.map((model) => model.toEntity()).toList();
     } catch (e) {
-      // Log error in production app
       return [];
     }
   }
@@ -49,7 +46,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
     try {
       await localDataSource.markBonusContentViewed(contentId);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
@@ -60,7 +56,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
       final profileModel = await localDataSource.getEngagementProfile();
       return profileModel.toEntity();
     } catch (e) {
-      // Log error in production app, return empty profile as fallback
       return EngagementProfile.empty();
     }
   }
@@ -71,7 +66,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
       final profileModel = EngagementProfileModel.fromEntity(profile);
       await localDataSource.saveEngagementProfile(profileModel);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
@@ -81,7 +75,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
     try {
       await localDataSource.clearDailyData();
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
@@ -98,7 +91,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
       
       return today.isAfter(lastReset);
     } catch (e) {
-      // If there's an error, assume reset is needed
       return true;
     }
   }
@@ -108,7 +100,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
     try {
       return await localDataSource.getLastResetDate();
     } catch (e) {
-      // Log error in production app
       return null;
     }
   }
@@ -118,23 +109,19 @@ class EngagementRepositoryImpl implements EngagementRepository {
     try {
       await localDataSource.saveLastResetDate(date);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
 
-  // Helper method to save generated challenge
   Future<void> saveTodaysChallenge(DailyChallenge challenge) async {
     try {
       final challengeModel = DailyChallengeModel.fromEntity(challenge);
       await localDataSource.saveTodaysChallenge(challengeModel);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
 
-  // Helper method to save generated bonus content
   Future<void> saveTodaysBonusContent(List<DailyBonusContent> content) async {
     try {
       final contentModels = content
@@ -142,7 +129,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
           .toList();
       await localDataSource.saveTodaysBonusContent(contentModels);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }

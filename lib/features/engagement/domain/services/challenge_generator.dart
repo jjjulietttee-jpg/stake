@@ -4,10 +4,7 @@ import '../entities/daily_challenge.dart';
 class ChallengeGenerator {
   final Random _random = Random();
 
-  /// Generate a daily challenge for the given date
-  /// Ensures challenges are different each day by using date as seed
   DailyChallenge generateChallenge(DateTime date) {
-    // Use date as seed to ensure same challenge for same day
     final seed = date.year * 10000 + date.month * 100 + date.day;
     final random = Random(seed);
     
@@ -194,7 +191,6 @@ class ChallengeGenerator {
     );
   }
 
-  /// Get fallback challenges for when generation fails
   List<DailyChallenge> getFallbackChallenges(DateTime date) {
     final challengeId = 'fallback_${date.year}_${date.month}_${date.day}';
     

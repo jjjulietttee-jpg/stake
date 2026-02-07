@@ -4,7 +4,6 @@ import '../../domain/entities/achievement.dart';
 import '../../domain/repositories/profile_repository.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
-  // Initial user profile data - will be updated based on gameplay
   UserProfile _userProfile = UserProfile(
     id: 'user_001',
     name: 'Player',
@@ -12,7 +11,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
     totalScore: 2450,
     level: 5,
     gamesPlayed: 23,
-    totalPlayTime: 3600, // 1 hour
+    totalPlayTime: 3600,
     createdAt: DateTime.now().subtract(const Duration(days: 30)),
     lastPlayedAt: DateTime.now().subtract(const Duration(hours: 2)),
     gameStats: {
@@ -128,7 +127,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<UserProfile> getUserProfile() async {
-    // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
     return _userProfile;
   }
@@ -192,8 +190,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
     required int playTime,
   }) async {
     await Future.delayed(const Duration(milliseconds: 300));
-    
-    // Update user profile
     final newGameStats = Map<String, int>.from(_userProfile.gameStats);
     final currentBest = newGameStats[gameType] ?? 0;
     if (score > currentBest) {
@@ -208,8 +204,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
       lastPlayedAt: DateTime.now(),
       gameStats: newGameStats,
     );
-
-    // Update achievement progress
     _updateAchievementProgressInternal();
   }
 
@@ -231,7 +225,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
             newProgress = (_userProfile.totalScore / achievement.targetValue).clamp(0.0, 1.0);
             shouldUnlock = _userProfile.totalScore >= achievement.targetValue;
           } else {
-            // Game-specific score achievements
             final gameScore = _userProfile.gameStats['memory_game'] ?? 0;
             newProgress = (gameScore / achievement.targetValue).clamp(0.0, 1.0);
             shouldUnlock = gameScore >= achievement.targetValue;
@@ -250,7 +243,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
           shouldUnlock = _userProfile.level >= achievement.targetValue;
           break;
         default:
-          // Keep current progress for other types (perfectGame, speedRun, etc.)
           newProgress = achievement.progress;
       }
 

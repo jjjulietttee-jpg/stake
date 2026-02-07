@@ -35,7 +35,6 @@ class MemoryGameScreen extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // App Bar
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -69,13 +68,10 @@ class MemoryGameScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              
-              // Game Content
               Expanded(
                 child: BlocConsumer<MemoryGameBloc, MemoryGameState>(
                   listener: (context, state) {
                     if (state.status == GameStatus.completed) {
-                      // Record game completion for profile
                       getIt<GameCompletionService>().onGameCompleted(
                         gameType: 'memory_game',
                         score: state.score,
@@ -93,7 +89,6 @@ class MemoryGameScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
-                          // Game Stats
                           GameStatsWidget(
                             moves: state.moves,
                             matches: state.matches,
@@ -103,8 +98,6 @@ class MemoryGameScreen extends StatelessWidget {
                           ),
                           
                           const SizedBox(height: 20),
-                          
-                          // Game Grid
                           Expanded(
                             child: GridView.builder(
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -120,7 +113,6 @@ class MemoryGameScreen extends StatelessWidget {
                                   card: card,
                                   isEnabled: state.canFlip && state.status == GameStatus.playing,
                                   onTap: () {
-                                    print('🎮 UI: Tapping card $index (icon: ${card.icon})');
                                     context.read<MemoryGameBloc>().add(FlipCard(index));
                                   },
                                 );
@@ -129,8 +121,6 @@ class MemoryGameScreen extends StatelessWidget {
                           ),
                           
                           const SizedBox(height: 20),
-                          
-                          // Control Buttons
                           Row(
                             children: [
                               Expanded(
@@ -138,7 +128,6 @@ class MemoryGameScreen extends StatelessWidget {
                                   text: 'New Game',
                                   backgroundColor: AppColors.buttonRed,
                                   onPressed: () {
-                                    print('🎮 UI: New Game button pressed');
                                     context.read<MemoryGameBloc>().add(const StartGame(pairs: 6));
                                   },
                                 ),
@@ -213,7 +202,6 @@ class MemoryGameScreen extends StatelessWidget {
               height: 60,
               icon: Icons.play_arrow,
               onPressed: () {
-                print('🎮 UI: Start Game button pressed (initial)');
                 context.read<MemoryGameBloc>().add(const StartGame(pairs: 6));
               },
             ),
@@ -314,7 +302,6 @@ class MemoryGameScreen extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     Navigator.of(dialogContext).pop();
-                    print('🎮 UI: Play Again button pressed');
                     context.read<MemoryGameBloc>().add(const StartGame(pairs: 6));
                   },
                   child: const CustomText.body(

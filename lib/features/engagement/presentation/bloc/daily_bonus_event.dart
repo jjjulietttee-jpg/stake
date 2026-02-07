@@ -8,17 +8,14 @@ abstract class DailyBonusEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Load today's bonus content
 class LoadTodaysBonusContent extends DailyBonusEvent {
   const LoadTodaysBonusContent();
 }
 
-/// Load only unviewed bonus content
 class LoadUnviewedBonusContent extends DailyBonusEvent {
   const LoadUnviewedBonusContent();
 }
 
-/// Mark bonus content as viewed
 class MarkBonusContentViewed extends DailyBonusEvent {
   final String contentId;
 
@@ -28,7 +25,6 @@ class MarkBonusContentViewed extends DailyBonusEvent {
   List<Object?> get props => [contentId];
 }
 
-/// Filter content by type
 class FilterBonusContentByType extends DailyBonusEvent {
   final ContentType? contentType;
 
@@ -38,7 +34,6 @@ class FilterBonusContentByType extends DailyBonusEvent {
   List<Object?> get props => [contentType];
 }
 
-/// Refresh bonus content
 class RefreshBonusContent extends DailyBonusEvent {
   const RefreshBonusContent();
 }

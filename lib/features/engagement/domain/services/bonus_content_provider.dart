@@ -4,18 +4,13 @@ import '../entities/daily_bonus_content.dart';
 class BonusContentProvider {
   final Random _random = Random();
 
-  /// Generate daily bonus content for the given date
-  /// Uses date as seed to ensure same content for same day
   List<DailyBonusContent> generateDailyContent(DateTime date) {
-    // Use date as seed to ensure same content for same day
     final seed = date.year * 10000 + date.month * 100 + date.day;
     final random = Random(seed);
     
-    // Generate 2-3 pieces of content per day
     final contentCount = 2 + random.nextInt(2);
     final content = <DailyBonusContent>[];
     
-    // Ensure variety by selecting different types
     final availableTypes = List<ContentType>.from(ContentType.values);
     availableTypes.shuffle(random);
     
@@ -216,7 +211,6 @@ class BonusContentProvider {
     );
   }
 
-  /// Get fallback content when generation fails
   List<DailyBonusContent> getFallbackContent(DateTime date) {
     final contentId = 'fallback_${date.year}_${date.month}_${date.day}';
     
@@ -232,7 +226,6 @@ class BonusContentProvider {
     ];
   }
 
-  /// Get content rotation index to ensure variety over time
   int _getRotationIndex(DateTime date, int totalItems) {
     final daysSinceEpoch = date.difference(DateTime(2024, 1, 1)).inDays;
     return daysSinceEpoch % totalItems;

@@ -18,7 +18,6 @@ class DailyResetService {
     required this.bonusContentProvider,
   });
 
-  /// Check if daily reset is needed and perform it if necessary
   Future<bool> checkAndPerformDailyReset() async {
     try {
       final shouldReset = await repository.shouldResetDaily();
@@ -28,44 +27,34 @@ class DailyResetService {
       }
       return false;
     } catch (e) {
-      // Log error in production app
       return false;
     }
   }
 
-  /// Perform daily reset operations
   Future<void> performDailyReset() async {
     try {
       final now = DateTime.now();
 
-      // Update streak before clearing daily data
       await _updateStreakOnReset();
 
-      // Clear previous day's data
       await repository.resetDailyData();
 
-      // Generate new daily challenge
       await _generateNewChallenge(now);
 
-      // Generate new bonus content
       await _generateNewBonusContent(now);
 
-      // Update last reset date
       await repository.updateLastResetDate(now);
     } catch (e) {
-      // Log error in production app
       rethrow;
     }
   }
 
-  /// Update user's streak based on previous day's activity
   Future<void> _updateStreakOnReset() async {
     try {
       final profile = await repository.getEngagementProfile();
       final lastResetDate = await repository.getLastResetDate();
 
       if (lastResetDate == null) {
-        // First time user, no streak to update
         return;
       }
 
@@ -78,7 +67,6 @@ class DailyResetService {
       );
       final yesterday = today.subtract(const Duration(days: 1));
 
-      // Check if user was active yesterday
       final wasActiveYesterday =
           _isSameDay(profile.lastEngagementDate, yesterday) ||
           _isSameDay(profile.lastEngagementDate, lastReset);
@@ -87,13 +75,11 @@ class DailyResetService {
       int newLongestStreak = profile.longestStreak;
 
       if (wasActiveYesterday) {
-        // Continue streak
         newCurrentStreak = profile.currentStreak + 1;
         if (newCurrentStreak > newLongestStreak) {
           newLongestStreak = newCurrentStreak;
         }
       } else {
-        // Streak broken
         newCurrentStreak = 0;
       }
 
@@ -104,24 +90,19 @@ class DailyResetService {
 
       await repository.updateEngagementProfile(updatedProfile);
     } catch (e) {
-      // Log error in production app
-      // Don't rethrow to avoid blocking daily reset
     }
   }
 
-  /// Generate new daily challenge
   Future<void> _generateNewChallenge(DateTime date) async {
     try {
       final challenge = challengeGenerator.generateChallenge(date);
 
-      // Save challenge using repository helper method
       if (repository is EngagementRepositoryImpl) {
         await (repository as EngagementRepositoryImpl).saveTodaysChallenge(
           challenge,
         );
       }
     } catch (e) {
-      // If challenge generation fails, try fallback
       try {
         final fallbackChallenges = challengeGenerator.getFallbackChallenges(
           date,
@@ -133,25 +114,21 @@ class DailyResetService {
           );
         }
       } catch (fallbackError) {
-        // Log both errors in production app
         rethrow;
       }
     }
   }
 
-  /// Generate new bonus content
   Future<void> _generateNewBonusContent(DateTime date) async {
     try {
       final bonusContent = bonusContentProvider.generateDailyContent(date);
 
-      // Save bonus content using repository helper method
       if (repository is EngagementRepositoryImpl) {
         await (repository as EngagementRepositoryImpl).saveTodaysBonusContent(
           bonusContent,
         );
       }
     } catch (e) {
-      // If bonus content generation fails, try fallback
       try {
         final fallbackContent = bonusContentProvider.getFallbackContent(date);
         if (repository is EngagementRepositoryImpl) {
@@ -160,20 +137,17 @@ class DailyResetService {
           );
         }
       } catch (fallbackError) {
-        // Log both errors in production app
         rethrow;
       }
     }
   }
 
-  /// Check if two dates are the same day
   bool _isSameDay(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
         date1.day == date2.day;
   }
 
-  /// Force daily reset manually
   Future<void> forceReset() async {
     await performDailyReset();
   }

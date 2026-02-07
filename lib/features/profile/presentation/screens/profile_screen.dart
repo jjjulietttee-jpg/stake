@@ -98,13 +98,10 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
               final userProfile = state is ProfileOnlyLoaded 
                   ? state.userProfile 
                   : (state as ProfileLoaded).userProfile;
-              
-              // Load achievements in background for quick stats
               if (state is ProfileOnlyLoaded) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
                   if (mounted) {
                     context.read<ProfileBloc>().add(const LoadAchievements());
-                    // Sync engagement metrics
                     try {
                       final engagementService = getIt<EngagementService>();
                       final engagementProfile = await engagementService.getEngagementProfile();
@@ -115,13 +112,10 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                         totalChallengesCompleted: engagementProfile.totalChallengesCompleted,
                         totalBonusContentViewed: engagementProfile.totalBonusContentViewed,
                       );
-                      // Refresh profile to show updated engagement metrics
                       if (mounted) {
                         context.read<ProfileBloc>().add(const RefreshProfile());
                       }
-                    } catch (e) {
-                      // Silently fail - engagement metrics are optional
-                    }
+                    } catch (e) {}
                   }
                 });
               }
@@ -130,7 +124,6 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
               return CustomScrollView(
                 controller: _scrollController,
                 slivers: [
-                  // Profile App Bar
                   SliverAppBar(
                     expandedHeight: 200,
                     floating: false,
@@ -186,13 +179,10 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                       ),
                     ),
                   ),
-
-                  // Profile content
                   SliverPadding(
                     padding: const EdgeInsets.all(24),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        // Player stats
                         const CustomText.title(
                           text: 'Player Statistics',
                           textAlign: TextAlign.center,
@@ -201,8 +191,6 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                         const SizedBox(height: 24),
                         ProfileStatsWidget(userProfile: userProfile),
                         const SizedBox(height: 32),
-
-                        // Achievements section
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -223,8 +211,6 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                           ],
                         ),
                         const SizedBox(height: 24),
-
-                        // Quick Achievement Preview
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4.0),
                           child: Container(
@@ -326,8 +312,6 @@ class _ProfileScreenContentState extends State<_ProfileScreenContent> {
                       ]),
                     ),
                   ),
-
-                  // Bottom actions
                   SliverPadding(
                     padding: const EdgeInsets.all(24),
                     sliver: SliverList(

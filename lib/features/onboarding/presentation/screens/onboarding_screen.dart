@@ -81,7 +81,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              // Skip button
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
@@ -95,7 +94,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
               ),
-              // Page content
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
@@ -112,7 +110,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Icon with glow effect
                           Container(
                             width: 120,
                             height: 120,
@@ -139,21 +136,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                           ),
                           const SizedBox(height: 48),
-                          // Title
                           CustomText.title(
                             text: page.title,
                             textAlign: TextAlign.center,
                             hasGlow: true,
                           ),
                           const SizedBox(height: 16),
-                          // Subtitle
                           CustomText.subtitle(
                             text: page.subtitle,
                             textAlign: TextAlign.center,
                             color: AppColors.accent,
                           ),
                           const SizedBox(height: 24),
-                          // Description
                           CustomText.body(
                             text: page.description,
                             textAlign: TextAlign.center,
@@ -165,7 +159,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   },
                 ),
               ),
-              // Page indicator
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -193,7 +186,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
               const SizedBox(height: 48),
-              // Next button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: CustomElevatedButton(

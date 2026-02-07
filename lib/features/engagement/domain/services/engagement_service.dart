@@ -9,8 +9,6 @@ import '../usecases/get_todays_bonus_content_usecase.dart';
 import '../usecases/mark_bonus_viewed_usecase.dart';
 import 'engagement_analytics.dart';
 
-/// Main service that coordinates all engagement features
-/// Integrates with existing profile and achievement systems
 class EngagementService {
   final EngagementRepository repository;
   final GetTodaysChallengeUseCase getTodaysChallengeUseCase;
@@ -30,34 +28,27 @@ class EngagementService {
     required this.analytics,
   });
 
-  // Challenge-related methods
 
-  /// Get today's daily challenge
   Future<DailyChallenge?> getTodaysChallenge() async {
     return await getTodaysChallengeUseCase();
   }
 
-  /// Complete a daily challenge and award rewards
   Future<bool> completeChallenge({
     required String challengeId,
     Map<String, dynamic>? gameData,
   }) async {
     final completedAt = DateTime.now();
     
-    // Complete the challenge
     final success = await completeChallengeUseCase(
       challengeId: challengeId,
       completedAt: completedAt,
     );
     
     if (success) {
-      // Award achievements if applicable
       await _awardChallengeAchievements(challengeId, gameData);
       
-      // Update streak
       await updateStreakUseCase(engagementDate: completedAt);
       
-      // Record feature usage
       await analytics.recordFeatureUsage(
         featureName: 'daily_challenge',
         action: 'completed',
@@ -72,7 +63,6 @@ class EngagementService {
     return success;
   }
 
-  /// Check if challenge can be completed based on game data
   Future<bool> canCompleteChallenge({
     required String challengeId,
     required Map<String, dynamic> gameData,
@@ -89,19 +79,15 @@ class EngagementService {
     }
   }
 
-  // Bonus content-related methods
 
-  /// Get today's bonus content
   Future<List<DailyBonusContent>> getTodaysBonusContent() async {
     return await getTodaysBonusContentUseCase();
   }
 
-  /// Get only unviewed bonus content
   Future<List<DailyBonusContent>> getUnviewedBonusContent() async {
     return await getTodaysBonusContentUseCase.getUnviewedContent();
   }
 
-  /// Mark bonus content as viewed
   Future<bool> viewBonusContent(String contentId) async {
     final viewedAt = DateTime.now();
     
@@ -111,7 +97,6 @@ class EngagementService {
     );
     
     if (success) {
-      // Record feature usage
       await analytics.recordFeatureUsage(
         featureName: 'daily_bonus',
         action: 'viewed',
@@ -123,28 +108,22 @@ class EngagementService {
     return success;
   }
 
-  // Profile and streak methods
 
-  /// Get user's engagement profile
   Future<EngagementProfile> getEngagementProfile() async {
     return await repository.getEngagementProfile();
   }
 
-  /// Update engagement streak
   Future<EngagementProfile> updateStreak({DateTime? engagementDate}) async {
     return await updateStreakUseCase(
       engagementDate: engagementDate ?? DateTime.now(),
     );
   }
 
-  /// Get current streak length
   Future<int> getCurrentStreak() async {
     return await updateStreakUseCase.calculateCurrentStreak();
   }
 
-  // Integration with existing systems
 
-  /// Called when user completes any game (integration point)
   Future<void> onGameCompleted({
     required String gameType,
     required int score,
@@ -159,7 +138,6 @@ class EngagementService {
         if (additionalData != null) ...additionalData,
       };
       
-      // Check if this completes today's challenge
       final challenge = await getTodaysChallenge();
       if (challenge != null && !challenge.isCompleted) {
         final canComplete = await canCompleteChallenge(
@@ -175,15 +153,12 @@ class EngagementService {
         }
       }
       
-      // Update engagement metrics
       await updateStreak();
       
     } catch (e) {
-      // Log error but don't throw to avoid breaking game completion
     }
   }
 
-  /// Get engagement summary for display
   Future<Map<String, dynamic>> getEngagementSummary() async {
     try {
       final profile = await getEngagementProfile();
@@ -206,12 +181,10 @@ class EngagementService {
     }
   }
 
-  // Private helper methods
 
   bool _checkChallengeCompletion(DailyChallenge challenge, Map<String, dynamic> gameData) {
     switch (challenge.type) {
       case ChallengeType.playGames:
-        // This would be tracked separately, not from single game completion
         return false;
         
       case ChallengeType.achieveScore:
@@ -220,7 +193,6 @@ class EngagementService {
         return gameScore >= targetScore;
         
       case ChallengeType.playTime:
-        // This would be tracked separately across multiple games
         return false;
         
       case ChallengeType.perfectGame:
@@ -228,31 +200,21 @@ class EngagementService {
         return mistakes == 0;
         
       case ChallengeType.streak:
-        // This is handled by streak tracking, not individual games
         return false;
     }
   }
 
   Future<void> _awardChallengeAchievements(String challengeId, Map<String, dynamic>? gameData) async {
     try {
-      // Integration point with existing achievement system
-      // This would call the existing achievement service
       
-      // Example: Award streak-based achievements
       final profile = await getEngagementProfile();
       if (profile.currentStreak > 0 && profile.currentStreak % 7 == 0) {
-        // Award weekly streak achievement
-        // await achievementService.unlockAchievement('weekly_streak_${profile.currentStreak ~/ 7}');
       }
       
-      // Example: Award challenge completion achievements
       if (profile.totalChallengesCompleted > 0 && profile.totalChallengesCompleted % 10 == 0) {
-        // Award challenge milestone achievement
-        // await achievementService.unlockAchievement('challenge_milestone_${profile.totalChallengesCompleted ~/ 10}');
       }
       
     } catch (e) {
-      // Log error but don't throw to avoid blocking challenge completion
     }
   }
 }

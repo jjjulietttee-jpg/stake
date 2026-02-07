@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -14,11 +15,11 @@ import 'features/engagement/presentation/bloc/daily_challenge_bloc.dart';
 import 'features/engagement/presentation/bloc/daily_bonus_bloc.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 import 'features/splash/presentation/bloc/splash_bloc.dart';
+import 'features/policy/presentation/screens/policy_screen.dart';
 import 'core/di/injection_container.dart' as di;
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/splash',
-  debugLogDiagnostics: true,
   routes: [
     GoRoute(
       path: '/splash',
@@ -27,6 +28,15 @@ final GoRouter appRouter = GoRouter(
         create: (context) => di.sl<SplashBloc>(),
         child: const SplashScreen(),
       ),
+    ),
+    GoRoute(
+      path: '/policy',
+      name: 'policy',
+      pageBuilder: (context, state) {
+        final url = state.uri.queryParameters['url'] ??
+            'https://world.openfoodfacts.org';
+        return _buildPolicyPage(state, PolicyScreen(url: url));
+      },
     ),
     GoRoute(
       path: '/onboarding',
@@ -66,7 +76,6 @@ final GoRouter appRouter = GoRouter(
         child: const MemoryGameScreen(),
       ),
     ),
-    // Engagement feature routes
     GoRoute(
       path: '/daily-challenge',
       name: 'daily-challenge',
@@ -85,3 +94,29 @@ final GoRouter appRouter = GoRouter(
     ),
   ],
 );
+
+CustomTransitionPage<PolicyScreen> _buildPolicyPage(
+  GoRouterState state,
+  PolicyScreen child,
+) {
+  const duration = Duration(milliseconds: 250);
+  return CustomTransitionPage<PolicyScreen>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: duration,
+    reverseTransitionDuration: duration,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+          CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+        ),
+        child: ScaleTransition(
+          scale: Tween<double>(begin: 0.95, end: 1.0).animate(
+            CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+          ),
+          child: child,
+        ),
+      );
+    },
+  );
+}

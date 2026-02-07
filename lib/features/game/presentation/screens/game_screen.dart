@@ -63,7 +63,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            // Game App Bar
             SliverAppBar(
               expandedHeight: 150,
               floating: false,
@@ -112,14 +111,11 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
-
-            // Game content
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   if (!_isGameStarted) ...[
-                    // Training mode selection
                     const CustomText.title(
                       text: 'Select Training Mode',
                       textAlign: TextAlign.center,
@@ -133,8 +129,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       color: AppColors.textPrimary.withValues(alpha: 0.8),
                     ),
                     const SizedBox(height: 32),
-
-                    // Training mode card
                     CardWidget(
                       hasGlow: true,
                       onTap: () => context.push('/memory-game'),
@@ -173,8 +167,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       ),
                     ),
                     const SizedBox(height: 32),
-
-                    // Start training button
                     CustomElevatedButton(
                       text: 'START TRAINING',
                       backgroundColor: AppColors.buttonRed,
@@ -183,7 +175,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       onPressed: () => context.push('/memory-game'),
                     ),
                   ] else ...[
-                    // Game interface
                     Row(
                       children: [
                         Expanded(
@@ -224,8 +215,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       ],
                     ),
                     const SizedBox(height: 32),
-
-                    // Game area
                     CardWidget(
                       hasGlow: true,
                       height: 300,
@@ -276,8 +265,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       ),
                     ),
                     const SizedBox(height: 24),
-
-                    // Game action button
                     CustomElevatedButton(
                       text: 'PLAY TURN',
                       backgroundColor: AppColors.accent,
@@ -287,8 +274,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       onPressed: _simulateGameAction,
                     ),
                     const SizedBox(height: 16),
-
-                    // Stop game button
                     CustomElevatedButton(
                       text: 'END GAME',
                       backgroundColor: AppColors.cardBackground,
@@ -299,10 +284,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                       },
                     ),
                   ],
-
                   const SizedBox(height: 32),
-
-                  // Game features
                   const CustomText.subtitle(
                     text: 'Game Features',
                     hasGlow: false,

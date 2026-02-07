@@ -110,7 +110,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         playTime: event.playTime,
       );
       
-      // Refresh profile after updating stats
       add(const RefreshProfile());
     } catch (e) {
       emit(ProfileError('Failed to update game stats: ${e.toString()}'));

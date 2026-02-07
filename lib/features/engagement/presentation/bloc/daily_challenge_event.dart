@@ -7,12 +7,10 @@ abstract class DailyChallengeEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Load today's daily challenge
 class LoadTodaysChallenge extends DailyChallengeEvent {
   const LoadTodaysChallenge();
 }
 
-/// Complete the current daily challenge
 class CompleteChallenge extends DailyChallengeEvent {
   final String challengeId;
   final Map<String, dynamic>? gameData;
@@ -26,12 +24,10 @@ class CompleteChallenge extends DailyChallengeEvent {
   List<Object?> get props => [challengeId, gameData];
 }
 
-/// Refresh the challenge (force reload)
 class RefreshChallenge extends DailyChallengeEvent {
   const RefreshChallenge();
 }
 
-/// Check if challenge can be completed with given game data
 class CheckChallengeCompletion extends DailyChallengeEvent {
   final String challengeId;
   final Map<String, dynamic> gameData;

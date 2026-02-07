@@ -67,7 +67,6 @@ class _AchievementCardWidgetState extends State<AchievementCardWidget>
         padding: const EdgeInsets.all(4),
         child: Row(
           children: [
-            // Achievement Icon
             Container(
               width: 64,
               height: 64,
@@ -117,8 +116,6 @@ class _AchievementCardWidgetState extends State<AchievementCardWidget>
                     ),
             ),
             const SizedBox(width: 16),
-
-            // Achievement Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,8 +161,6 @@ class _AchievementCardWidgetState extends State<AchievementCardWidget>
                         : AppColors.textPrimary.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 8),
-
-                  // Progress or XP Reward
                   if (widget.achievement.isUnlocked) ...[
                     Row(
                       children: [
@@ -225,8 +220,6 @@ class _AchievementCardWidgetState extends State<AchievementCardWidget>
                 ],
               ),
             ),
-
-            // Status Icon
             const SizedBox(width: 12),
             Icon(
               widget.achievement.isUnlocked ? Icons.check_circle : Icons.lock,

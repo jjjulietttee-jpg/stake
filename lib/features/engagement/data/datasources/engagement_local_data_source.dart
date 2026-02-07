@@ -42,7 +42,6 @@ class EngagementLocalDataSourceImpl implements EngagementLocalDataSource {
       final challengeMap = json.decode(challengeJson) as Map<String, dynamic>;
       return DailyChallengeModel.fromJson(challengeMap);
     } catch (e) {
-      // If there's an error parsing, return null to trigger regeneration
       return null;
     }
   }
@@ -85,7 +84,6 @@ class EngagementLocalDataSourceImpl implements EngagementLocalDataSource {
           )
           .toList();
     } catch (e) {
-      // If there's an error parsing, return empty list to trigger regeneration
       return [];
     }
   }
@@ -127,14 +125,12 @@ class EngagementLocalDataSourceImpl implements EngagementLocalDataSource {
     try {
       final profileJson = sharedPreferences.getString(_engagementProfileKey);
       if (profileJson == null) {
-        // Return empty profile if none exists
         return EngagementProfileModel.fromEntity(EngagementProfile.empty());
       }
 
       final profileMap = json.decode(profileJson) as Map<String, dynamic>;
       return EngagementProfileModel.fromJson(profileMap);
     } catch (e) {
-      // If there's an error parsing, return empty profile
       return EngagementProfileModel.fromEntity(EngagementProfile.empty());
     }
   }

@@ -16,7 +16,6 @@ class ProfileStatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Level and XP Progress
         CardWidget(
           hasGlow: true,
           child: Column(
@@ -65,8 +64,6 @@ class ProfileStatsWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        
-        // Stats Grid
         Row(
           children: [
             Expanded(
@@ -202,8 +199,6 @@ class ProfileStatsWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        
-        // Engagement Stats Section
         const CustomText.subtitle(
           text: 'Daily Engagement',
           hasGlow: false,

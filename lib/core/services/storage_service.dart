@@ -1,12 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Service for managing local storage using SharedPreferences
 class StorageService {
   final SharedPreferences _prefs;
 
   StorageService(this._prefs);
 
-  // Onboarding
   Future<bool> getOnboardingCompleted() async {
     return _prefs.getBool('onboarding_completed') ?? false;
   }
@@ -15,7 +13,6 @@ class StorageService {
     await _prefs.setBool('onboarding_completed', value);
   }
 
-  // Profile
   Future<String?> getPlayerName() async {
     return _prefs.getString('player_name');
   }
@@ -40,13 +37,10 @@ class StorageService {
     await _prefs.setInt('best_score', score);
   }
 
-  // Achievements progress
   Future<Map<String, dynamic>> getAchievementsProgress() async {
     final String? json = _prefs.getString('achievements_progress');
     if (json == null) return {};
-    // Simple implementation - in production use json_serializable
     try {
-      // For now return empty map, can be extended with proper JSON parsing
       return {};
     } catch (e) {
       return {};
@@ -54,8 +48,6 @@ class StorageService {
   }
 
   Future<void> setAchievementsProgress(Map<String, dynamic> progress) async {
-    // Simple implementation - in production use json_serializable
-    // For now, we'll store individual achievement progress
   }
 
   Future<void> setAchievementProgress(String achievementId, double progress) async {
@@ -74,7 +66,6 @@ class StorageService {
     return _prefs.getBool('achievement_${achievementId}_completed') ?? false;
   }
 
-  // Clear all data
   Future<void> clearAll() async {
     await _prefs.clear();
   }

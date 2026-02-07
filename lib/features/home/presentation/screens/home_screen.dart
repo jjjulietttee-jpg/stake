@@ -94,7 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            // App Bar with parallax effect
             SliverAppBar(
               expandedHeight: 200,
               floating: false,
@@ -145,12 +144,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            // Main content
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  // Welcome section
                   const CustomText.title(
                     text: 'Memory Games',
                     textAlign: TextAlign.center,
@@ -163,8 +160,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: AppColors.textPrimary.withValues(alpha: 0.8),
                   ),
                   const SizedBox(height: 32),
-                  
-                  // Main play button
                   CustomElevatedButton(
                     text: 'START TRAINING',
                     backgroundColor: AppColors.buttonRed,
@@ -173,8 +168,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () => context.push('/game'),
                   ),
                   const SizedBox(height: 32),
-                  
-                  // Quick access cards
                   const CustomText.subtitle(
                     text: 'Quick Access',
                     hasGlow: false,
@@ -297,8 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 32),
-                  
-                  // Edit name button
                   CustomElevatedButton(
                     text: _userName != null ? 'Change Name' : 'Set Name',
                     backgroundColor: AppColors.cardBackground,

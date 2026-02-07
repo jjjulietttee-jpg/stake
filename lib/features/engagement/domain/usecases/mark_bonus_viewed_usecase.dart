@@ -17,7 +17,6 @@ class MarkBonusViewedUseCase {
     required DateTime viewedAt,
   }) async {
     try {
-      // Get current bonus content to verify it exists
       final bonusContent = await repository.getTodaysBonusContent();
       final content = bonusContent.firstWhere(
         (item) => item.id == contentId,
@@ -28,13 +27,10 @@ class MarkBonusViewedUseCase {
         return false; // Already viewed
       }
       
-      // Mark content as viewed
       await repository.markBonusContentViewed(contentId);
       
-      // Update engagement profile
       await _updateEngagementProfile(content, viewedAt);
       
-      // Record analytics
       await analytics.recordBonusContentViewed(
         contentId: contentId,
         contentType: content.type,
@@ -44,7 +40,6 @@ class MarkBonusViewedUseCase {
       
       return true;
     } catch (e) {
-      // Log error in production
       return false;
     }
   }
@@ -53,12 +48,10 @@ class MarkBonusViewedUseCase {
     try {
       final profile = await repository.getEngagementProfile();
       
-      // Update content type stats
       final updatedContentStats = Map<String, int>.from(profile.contentTypeStats);
       final contentTypeKey = content.type.name;
       updatedContentStats[contentTypeKey] = (updatedContentStats[contentTypeKey] ?? 0) + 1;
       
-      // Check if this is the first engagement today
       final today = DateTime.now();
       final isFirstEngagementToday = !_isSameDay(profile.lastEngagementDate, today);
       
@@ -66,23 +59,18 @@ class MarkBonusViewedUseCase {
       int newLongestStreak = profile.longestStreak;
       
       if (isFirstEngagementToday) {
-        // Check if this continues a streak
         final yesterday = today.subtract(const Duration(days: 1));
         final wasActiveYesterday = _isSameDay(profile.lastEngagementDate, yesterday);
         
         if (wasActiveYesterday || profile.currentStreak == 0) {
-          // Continue or start streak
           newCurrentStreak = profile.currentStreak + 1;
         } else {
-          // Streak was broken, start new one
           newCurrentStreak = 1;
         }
         
-        // Update longest streak if necessary
         if (newCurrentStreak > newLongestStreak) {
           newLongestStreak = newCurrentStreak;
           
-          // Record streak milestone
           await analytics.recordStreakMilestone(
             streakLength: newCurrentStreak,
             achievedAt: viewedAt,
@@ -100,7 +88,6 @@ class MarkBonusViewedUseCase {
       
       await repository.updateEngagementProfile(updatedProfile);
       
-      // Record daily engagement analytics
       await analytics.recordDailyEngagement(
         sessionDate: viewedAt,
         challengeCompleted: false, // This is just content viewing
@@ -109,11 +96,9 @@ class MarkBonusViewedUseCase {
       );
       
     } catch (e) {
-      // Log error in production but don't rethrow to avoid blocking content viewing
     }
   }
 
-  /// Mark multiple content items as viewed
   Future<List<String>> markMultipleViewed({
     required List<String> contentIds,
     required DateTime viewedAt,
@@ -127,14 +112,12 @@ class MarkBonusViewedUseCase {
           successfulIds.add(contentId);
         }
       } catch (e) {
-        // Log error but continue with other items
       }
     }
     
     return successfulIds;
   }
 
-  /// Get viewing statistics
   Future<Map<String, int>> getViewingStats() async {
     try {
       final profile = await repository.getEngagementProfile();
@@ -143,7 +126,6 @@ class MarkBonusViewedUseCase {
         ...profile.contentTypeStats,
       };
     } catch (e) {
-      // Log error in production
       return {};
     }
   }

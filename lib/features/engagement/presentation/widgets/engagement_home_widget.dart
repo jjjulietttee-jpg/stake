@@ -18,7 +18,6 @@ class EngagementHomeWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         
-        // Daily Challenge Card
         CardWidget(
           hasGlow: true,
           onTap: () => context.push('/daily-challenge'),
@@ -70,7 +69,6 @@ class EngagementHomeWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         
-        // Daily Bonus Card
         CardWidget(
           hasGlow: true,
           onTap: () => context.push('/daily-bonus'),

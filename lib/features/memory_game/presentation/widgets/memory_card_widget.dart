@@ -42,8 +42,6 @@ class _MemoryCardWidgetState extends State<MemoryCardWidget>
   @override
   void didUpdateWidget(MemoryCardWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
-    // Only animate if the flip state actually changed
     if (widget.card.isFlipped != oldWidget.card.isFlipped || 
         widget.card.isMatched != oldWidget.card.isMatched) {
       
@@ -51,10 +49,8 @@ class _MemoryCardWidgetState extends State<MemoryCardWidget>
       final wasShowingFront = oldWidget.card.isFlipped || oldWidget.card.isMatched;
       
       if (shouldShowFront && !wasShowingFront) {
-        print('🎴 Card ${widget.card.id}: Flipping to FRONT (showing icon)');
         _controller.forward();
       } else if (!shouldShowFront && wasShowingFront) {
-        print('🎴 Card ${widget.card.id}: Flipping to BACK (hiding icon)');
         _controller.reverse();
       }
     }
@@ -64,7 +60,6 @@ class _MemoryCardWidgetState extends State<MemoryCardWidget>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('🎴 Card ${widget.card.id} tapped! isEnabled: ${widget.isEnabled}, isFlipped: ${widget.card.isFlipped}, isMatched: ${widget.card.isMatched}');
         if (widget.isEnabled) {
           widget.onTap();
         }

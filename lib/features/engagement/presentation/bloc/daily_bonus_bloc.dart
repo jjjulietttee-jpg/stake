@@ -89,7 +89,6 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
       final success = await engagementService.viewBonusContent(event.contentId);
       
       if (success) {
-        // Update the content list to mark the item as viewed
         final updatedContent = currentState.content.map((item) {
           if (item.id == event.contentId) {
             return item.copyWith(isViewed: true);
@@ -105,7 +104,6 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
           unviewedCount: newUnviewedCount,
         ));
         
-        // Transition back to loaded state with updated content
         emit(DailyBonusLoaded(
           content: updatedContent,
           activeFilter: currentState.activeFilter,
@@ -117,7 +115,6 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
           errorCode: 'VIEW_FAILED',
         ));
         
-        // Return to previous state
         emit(currentState);
       }
     } catch (e) {
@@ -126,7 +123,6 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
         errorCode: 'VIEW_ERROR',
       ));
       
-      // Return to previous state
       emit(currentState);
     }
   }
@@ -148,11 +144,9 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
     RefreshBonusContent event,
     Emitter<DailyBonusState> emit,
   ) async {
-    // Force refresh by loading content again
     add(const LoadTodaysBonusContent());
   }
 
-  /// Helper method to get current content
   List<DailyBonusContent> get currentContent {
     final currentState = state;
     if (currentState is DailyBonusLoaded) {
@@ -167,7 +161,6 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
     return [];
   }
 
-  /// Helper method to get unviewed count
   int get unviewedCount {
     final currentState = state;
     if (currentState is DailyBonusLoaded) {
@@ -179,7 +172,6 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
     return 0;
   }
 
-  /// Helper method to check if content is being viewed
   bool isContentBeingViewed(String contentId) {
     final currentState = state;
     if (currentState is DailyBonusViewing) {
@@ -188,12 +180,10 @@ class DailyBonusBloc extends Bloc<DailyBonusEvent, DailyBonusState> {
     return false;
   }
 
-  /// Helper method to get content by type
   List<DailyBonusContent> getContentByType(ContentType type) {
     return currentContent.where((item) => item.type == type).toList();
   }
 
-  /// Helper method to check if there's new content
   bool get hasNewContent {
     return unviewedCount > 0;
   }

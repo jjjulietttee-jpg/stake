@@ -8,17 +8,14 @@ abstract class DailyChallengeState extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Initial state
 class DailyChallengeInitial extends DailyChallengeState {
   const DailyChallengeInitial();
 }
 
-/// Loading challenge
 class DailyChallengeLoading extends DailyChallengeState {
   const DailyChallengeLoading();
 }
 
-/// Challenge loaded successfully
 class DailyChallengeLoaded extends DailyChallengeState {
   final DailyChallenge challenge;
   final bool canComplete;
@@ -42,7 +39,6 @@ class DailyChallengeLoaded extends DailyChallengeState {
   }
 }
 
-/// Challenge completion in progress
 class DailyChallengeCompleting extends DailyChallengeState {
   final DailyChallenge challenge;
 
@@ -52,7 +48,6 @@ class DailyChallengeCompleting extends DailyChallengeState {
   List<Object?> get props => [challenge];
 }
 
-/// Challenge completed successfully
 class DailyChallengeCompleted extends DailyChallengeState {
   final DailyChallenge challenge;
   final List<Reward> earnedRewards;
@@ -66,7 +61,6 @@ class DailyChallengeCompleted extends DailyChallengeState {
   List<Object?> get props => [challenge, earnedRewards];
 }
 
-/// No challenge available
 class DailyChallengeEmpty extends DailyChallengeState {
   final String message;
 
@@ -78,7 +72,6 @@ class DailyChallengeEmpty extends DailyChallengeState {
   List<Object?> get props => [message];
 }
 
-/// Error state
 class DailyChallengeError extends DailyChallengeState {
   final String message;
   final String? errorCode;

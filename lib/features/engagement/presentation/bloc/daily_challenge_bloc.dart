@@ -57,7 +57,6 @@ class DailyChallengeBloc
       );
 
       if (success) {
-        // Get updated challenge to reflect completion status
         final updatedChallenge = await engagementService.getTodaysChallenge();
 
         if (updatedChallenge != null && updatedChallenge.isCompleted) {
@@ -83,7 +82,6 @@ class DailyChallengeBloc
           ),
         );
 
-        // Return to loaded state
         emit(DailyChallengeLoaded(challenge: currentState.challenge));
       }
     } catch (e) {
@@ -94,7 +92,6 @@ class DailyChallengeBloc
         ),
       );
 
-      // Return to loaded state
       emit(DailyChallengeLoaded(challenge: currentState.challenge));
     }
   }
@@ -103,7 +100,6 @@ class DailyChallengeBloc
     RefreshChallenge event,
     Emitter<DailyChallengeState> emit,
   ) async {
-    // Force refresh by loading challenge again
     add(const LoadTodaysChallenge());
   }
 
@@ -122,12 +118,9 @@ class DailyChallengeBloc
 
       emit(currentState.copyWith(canComplete: canComplete));
     } catch (e) {
-      // Don't emit error for this, just keep current state
-      // This is a non-critical check
     }
   }
 
-  /// Helper method to check if challenge is completed
   bool get isChallengeCompleted {
     final currentState = state;
     if (currentState is DailyChallengeLoaded) {
@@ -139,7 +132,6 @@ class DailyChallengeBloc
     return false;
   }
 
-  /// Helper method to get current challenge
   DailyChallenge? get currentChallenge {
     final currentState = state;
     if (currentState is DailyChallengeLoaded) {
@@ -154,7 +146,6 @@ class DailyChallengeBloc
     return null;
   }
 
-  /// Helper method to check if can complete challenge
   bool get canCompleteChallenge {
     final currentState = state;
     if (currentState is DailyChallengeLoaded) {

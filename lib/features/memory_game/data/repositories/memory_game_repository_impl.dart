@@ -54,19 +54,12 @@ class MemoryGameRepositoryImpl implements MemoryGameRepository {
     required int moves,
     required Duration elapsedTime,
   }) {
-    // Base score for matches
     int baseScore = matches * 100;
-    
-    // Penalty for moves (fewer moves = higher score)
     int movePenalty = moves * 5;
-    
-    // Time bonus (faster completion = higher score)
     int timeBonus = 0;
     if (elapsedTime.inSeconds < 60) {
       timeBonus = (60 - elapsedTime.inSeconds) * 2;
     }
-    
-    // Calculate final score
     int finalScore = baseScore - movePenalty + timeBonus;
     
     return finalScore > 0 ? finalScore : 0;

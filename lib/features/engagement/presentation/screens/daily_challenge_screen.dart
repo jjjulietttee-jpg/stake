@@ -21,7 +21,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
   @override
   void initState() {
     super.initState();
-    // Load today's challenge when screen opens
     context.read<DailyChallengeBloc>().add(const LoadTodaysChallenge());
   }
 
@@ -43,7 +42,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
         ),
         child: CustomScrollView(
           slivers: [
-            // App Bar
             SliverAppBar(
               expandedHeight: 120,
               floating: false,
@@ -79,7 +77,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
                 ),
               ],
             ),
-            // Content
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: SliverList(
@@ -224,7 +221,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
 
     return Column(
       children: [
-        // Challenge Card
         CardWidget(
           hasGlow: !challenge.isCompleted,
           backgroundColor: challenge.isCompleted
@@ -233,7 +229,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Challenge Header
               Row(
                 children: [
                   Container(
@@ -263,26 +258,22 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Challenge Title
               CustomText.subtitle(
                 text: challenge.title,
                 hasGlow: !challenge.isCompleted,
               ),
               const SizedBox(height: 8),
 
-              // Challenge Description
               CustomText.body(
                 text: challenge.description,
                 color: AppColors.textPrimary.withValues(alpha: 0.8),
               ),
               const SizedBox(height: 16),
 
-              // Challenge Progress/Status
               _buildChallengeProgress(challenge),
 
               const SizedBox(height: 20),
 
-              // Rewards Section
               if (challenge.rewards.isNotEmpty) ...[
                 const CustomText.body(
                   text: 'Rewards:',
@@ -293,14 +284,12 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
                 const SizedBox(height: 16),
               ],
 
-              // Action Button
               if (!challenge.isCompleted)
                 CustomElevatedButton(
                   text: 'Start Playing',
                   icon: Icons.play_arrow,
                   backgroundColor: AppColors.buttonRed,
                   onPressed: () {
-                    // Navigate to game screen
                     context.push('/game');
                   },
                 )
@@ -318,7 +307,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
 
         const SizedBox(height: 24),
 
-        // Tips Card
         CardWidget(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -366,7 +354,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
   ) {
     return Column(
       children: [
-        // Celebration Card
         CardWidget(
           hasGlow: true,
           backgroundColor: AppColors.accent.withValues(alpha: 0.1),
@@ -387,7 +374,6 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen> {
               ),
               const SizedBox(height: 20),
 
-              // Earned Rewards
               if (state.earnedRewards.isNotEmpty) ...[
                 const CustomText.body(
                   text: 'Rewards Earned:',

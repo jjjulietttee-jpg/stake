@@ -18,18 +18,14 @@ class GetTodaysChallengeUseCase {
 
   Future<DailyChallenge?> call() async {
     try {
-      // Check if daily reset is needed
       await dailyResetService.checkAndPerformDailyReset();
 
-      // Try to get existing challenge
       var challenge = await repository.getTodaysChallenge();
 
-      // If no challenge exists, generate one
       if (challenge == null) {
         final today = DateTime.now();
         challenge = challengeGenerator.generateChallenge(today);
 
-        // Save the generated challenge
         if (repository is EngagementRepositoryImpl) {
           await (repository as EngagementRepositoryImpl).saveTodaysChallenge(
             challenge,
@@ -39,7 +35,6 @@ class GetTodaysChallengeUseCase {
 
       return challenge;
     } catch (e) {
-      // If all else fails, try to get a fallback challenge
       try {
         final today = DateTime.now();
         final fallbackChallenges = challengeGenerator.getFallbackChallenges(
@@ -47,7 +42,6 @@ class GetTodaysChallengeUseCase {
         );
         return fallbackChallenges.isNotEmpty ? fallbackChallenges.first : null;
       } catch (fallbackError) {
-        // Log both errors in production
         return null;
       }
     }

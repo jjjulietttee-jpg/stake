@@ -17,11 +17,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   ) async {
     try {
       emit(const SplashLoading());
-      
-      // Wait for splash animation (2 seconds)
       await Future.delayed(const Duration(seconds: 2));
-      
-      // Check onboarding status
       final onboardingCompleted = await storageService.getOnboardingCompleted();
       
       emit(SplashReadyToNavigate(
@@ -35,8 +31,5 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   Future<void> _onNavigateToNextScreen(
     NavigateToNextScreen event,
     Emitter<SplashState> emit,
-  ) async {
-    // Navigation is handled by the UI layer based on state
-    // This event can be used for additional navigation logic if needed
-  }
+  ) async {}
 }

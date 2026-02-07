@@ -8,17 +8,14 @@ abstract class DailyBonusState extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Initial state
 class DailyBonusInitial extends DailyBonusState {
   const DailyBonusInitial();
 }
 
-/// Loading bonus content
 class DailyBonusLoading extends DailyBonusState {
   const DailyBonusLoading();
 }
 
-/// Bonus content loaded successfully
 class DailyBonusLoaded extends DailyBonusState {
   final List<DailyBonusContent> content;
   final ContentType? activeFilter;
@@ -46,24 +43,20 @@ class DailyBonusLoaded extends DailyBonusState {
     );
   }
 
-  /// Get filtered content based on active filter
   List<DailyBonusContent> get filteredContent {
     if (activeFilter == null) return content;
     return content.where((item) => item.type == activeFilter).toList();
   }
 
-  /// Get only unviewed content
   List<DailyBonusContent> get unviewedContent {
     return content.where((item) => !item.isViewed).toList();
   }
 
-  /// Get content by type
   List<DailyBonusContent> getContentByType(ContentType type) {
     return content.where((item) => item.type == type).toList();
   }
 }
 
-/// Content viewing in progress
 class DailyBonusViewing extends DailyBonusState {
   final List<DailyBonusContent> content;
   final String viewingContentId;
@@ -77,7 +70,6 @@ class DailyBonusViewing extends DailyBonusState {
   List<Object?> get props => [content, viewingContentId];
 }
 
-/// Content viewed successfully
 class DailyBonusContentViewed extends DailyBonusState {
   final List<DailyBonusContent> content;
   final String viewedContentId;
@@ -93,7 +85,6 @@ class DailyBonusContentViewed extends DailyBonusState {
   List<Object?> get props => [content, viewedContentId, unviewedCount];
 }
 
-/// No bonus content available
 class DailyBonusEmpty extends DailyBonusState {
   final String message;
 
@@ -105,7 +96,6 @@ class DailyBonusEmpty extends DailyBonusState {
   List<Object?> get props => [message];
 }
 
-/// Error state
 class DailyBonusError extends DailyBonusState {
   final String message;
   final String? errorCode;

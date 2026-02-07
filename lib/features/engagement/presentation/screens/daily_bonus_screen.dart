@@ -23,7 +23,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
   @override
   void initState() {
     super.initState();
-    // Load today's bonus content when screen opens
     context.read<DailyBonusBloc>().add(const LoadTodaysBonusContent());
   }
 
@@ -45,7 +44,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
         ),
         child: CustomScrollView(
           slivers: [
-            // App Bar
             SliverAppBar(
               expandedHeight: 120,
               floating: false,
@@ -79,11 +77,9 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
                 ),
               ],
             ),
-            // Filter Tabs
             SliverToBoxAdapter(
               child: _buildFilterTabs(),
             ),
-            // Content
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: BlocBuilder<DailyBonusBloc, DailyBonusState>(
@@ -336,7 +332,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           if (index == 0) {
-            // Header with stats
             return Column(
               children: [
                 _buildStatsHeader(state),
@@ -378,7 +373,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
   }
 
   Widget _buildContentViewedState(BuildContext context, DailyBonusContentViewed state) {
-    // This state is transient, it will quickly transition to loaded state
     return _buildLoadedState(context, DailyBonusLoaded(
       content: state.content,
       unviewedCount: state.unviewedCount,
@@ -461,7 +455,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Content Header
           Row(
             children: [
               Container(
@@ -508,7 +501,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
           ),
           const SizedBox(height: 16),
           
-          // Content Title
           CustomText.body(
             text: content.title,
             fontWeight: FontWeight.bold,
@@ -516,7 +508,6 @@ class _DailyBonusScreenState extends State<DailyBonusScreen> {
           ),
           const SizedBox(height: 12),
           
-          // Content Body
           CustomText.body(
             text: content.content,
             color: AppColors.textPrimary.withValues(alpha: isViewed ? 0.6 : 0.9),

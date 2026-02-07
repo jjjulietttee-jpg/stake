@@ -1,11 +1,8 @@
 import '../entities/daily_bonus_content.dart';
 import '../entities/daily_challenge.dart';
 
-/// Service for tracking engagement analytics
-/// In a production app, this would integrate with analytics platforms
 class EngagementAnalytics {
   
-  /// Record when user views bonus content
   Future<void> recordBonusContentViewed({
     required String contentId,
     required ContentType contentType,
@@ -13,7 +10,6 @@ class EngagementAnalytics {
     required DateTime viewedAt,
   }) async {
     try {
-      // In production, send to analytics service
       _logAnalyticsEvent('bonus_content_viewed', {
         'content_id': contentId,
         'content_type': contentType.name,
@@ -21,11 +17,9 @@ class EngagementAnalytics {
         'viewed_at': viewedAt.toIso8601String(),
       });
     } catch (e) {
-      // Log error but don't throw to avoid blocking user experience
     }
   }
 
-  /// Record when user completes a daily challenge
   Future<void> recordChallengeCompleted({
     required String challengeId,
     required ChallengeType challengeType,
@@ -34,7 +28,6 @@ class EngagementAnalytics {
     required Duration timeToComplete,
   }) async {
     try {
-      // In production, send to analytics service
       _logAnalyticsEvent('challenge_completed', {
         'challenge_id': challengeId,
         'challenge_type': challengeType.name,
@@ -43,11 +36,9 @@ class EngagementAnalytics {
         'time_to_complete_seconds': timeToComplete.inSeconds,
       });
     } catch (e) {
-      // Log error but don't throw to avoid blocking user experience
     }
   }
 
-  /// Record when user starts a daily challenge
   Future<void> recordChallengeStarted({
     required String challengeId,
     required ChallengeType challengeType,
@@ -60,11 +51,9 @@ class EngagementAnalytics {
         'started_at': startedAt.toIso8601String(),
       });
     } catch (e) {
-      // Log error but don't throw
     }
   }
 
-  /// Record daily engagement session
   Future<void> recordDailyEngagement({
     required DateTime sessionDate,
     required bool challengeCompleted,
@@ -79,11 +68,9 @@ class EngagementAnalytics {
         'current_streak': currentStreak,
       });
     } catch (e) {
-      // Log error but don't throw
     }
   }
 
-  /// Record streak milestone
   Future<void> recordStreakMilestone({
     required int streakLength,
     required DateTime achievedAt,
@@ -94,11 +81,9 @@ class EngagementAnalytics {
         'achieved_at': achievedAt.toIso8601String(),
       });
     } catch (e) {
-      // Log error but don't throw
     }
   }
 
-  /// Record engagement feature usage
   Future<void> recordFeatureUsage({
     required String featureName,
     required String action,
@@ -118,30 +103,19 @@ class EngagementAnalytics {
       
       _logAnalyticsEvent('feature_usage', eventData);
     } catch (e) {
-      // Log error but don't throw
     }
   }
 
-  /// Internal method to log analytics events
-  /// In production, this would send to your analytics platform
   void _logAnalyticsEvent(String eventName, Map<String, dynamic> parameters) {
-    // For now, just print to console for debugging
-    // In production, replace with actual analytics SDK calls
     print('📊 Analytics Event: $eventName');
     print('   Parameters: $parameters');
     
-    // Example integrations:
-    // - Firebase Analytics: FirebaseAnalytics.instance.logEvent(name: eventName, parameters: parameters)
-    // - Mixpanel: Mixpanel.track(eventName, parameters)
-    // - Custom analytics API: await analyticsApi.sendEvent(eventName, parameters)
   }
 
-  /// Get engagement metrics for reporting
   Future<Map<String, dynamic>> getEngagementMetrics({
     required DateTime startDate,
     required DateTime endDate,
   }) async {
-    // Returns local engagement metrics
     return {
       'total_challenges_completed': 0,
       'total_bonus_content_viewed': 0,

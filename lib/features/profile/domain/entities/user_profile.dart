@@ -7,11 +7,10 @@ class UserProfile extends Equatable {
   final int totalScore;
   final int level;
   final int gamesPlayed;
-  final int totalPlayTime; // in seconds
+  final int totalPlayTime;
   final DateTime createdAt;
   final DateTime lastPlayedAt;
-  final Map<String, int> gameStats; // game type -> best score
-  // Engagement metrics
+  final Map<String, int> gameStats;
   final int currentStreak;
   final int longestStreak;
   final int totalChallengesCompleted;

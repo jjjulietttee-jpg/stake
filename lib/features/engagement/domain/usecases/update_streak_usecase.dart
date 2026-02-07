@@ -18,7 +18,6 @@ class UpdateStreakUseCase {
     try {
       final profile = await repository.getEngagementProfile();
       
-      // Check if this is the first engagement today
       final today = DateTime(engagementDate.year, engagementDate.month, engagementDate.day);
       final lastEngagement = DateTime(
         profile.lastEngagementDate.year,
@@ -26,7 +25,6 @@ class UpdateStreakUseCase {
         profile.lastEngagementDate.day,
       );
       
-      // If already engaged today and not forcing update, return current profile
       if (!forceUpdate && _isSameDay(profile.lastEngagementDate, engagementDate)) {
         return profile;
       }
@@ -35,25 +33,19 @@ class UpdateStreakUseCase {
       int newLongestStreak = profile.longestStreak;
       
       if (today.isAfter(lastEngagement)) {
-        // This is a new day
         final yesterday = today.subtract(const Duration(days: 1));
         
         if (_isSameDay(lastEngagement, yesterday)) {
-          // Consecutive day - continue streak
           newCurrentStreak = profile.currentStreak + 1;
         } else if (_isSameDay(lastEngagement, today.subtract(const Duration(days: 0)))) {
-          // Same day - no change to streak
           newCurrentStreak = profile.currentStreak;
         } else {
-          // Gap in engagement - start new streak
           newCurrentStreak = 1;
         }
         
-        // Update longest streak if necessary
         if (newCurrentStreak > newLongestStreak) {
           newLongestStreak = newCurrentStreak;
           
-          // Record milestone achievement
           await analytics.recordStreakMilestone(
             streakLength: newCurrentStreak,
             achievedAt: engagementDate,
@@ -71,12 +63,10 @@ class UpdateStreakUseCase {
       
       return updatedProfile;
     } catch (e) {
-      // Log error in production
       rethrow;
     }
   }
 
-  /// Calculate streak based on engagement history
   Future<int> calculateCurrentStreak() async {
     try {
       final profile = await repository.getEngagementProfile();
@@ -88,21 +78,17 @@ class UpdateStreakUseCase {
         profile.lastEngagementDate.day,
       );
       
-      // If last engagement was today or yesterday, streak is current
       if (_isSameDay(lastEngagement, today) || 
           _isSameDay(lastEngagement, today.subtract(const Duration(days: 1)))) {
         return profile.currentStreak;
       }
       
-      // Otherwise, streak is broken
       return 0;
     } catch (e) {
-      // Log error in production
       return 0;
     }
   }
 
-  /// Reset streak (used when user misses days)
   Future<EngagementProfile> resetStreak() async {
     try {
       final profile = await repository.getEngagementProfile();
@@ -115,7 +101,6 @@ class UpdateStreakUseCase {
       
       return updatedProfile;
     } catch (e) {
-      // Log error in production
       rethrow;
     }
   }

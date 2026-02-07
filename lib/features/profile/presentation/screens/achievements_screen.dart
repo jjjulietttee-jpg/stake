@@ -121,7 +121,6 @@ class _AchievementsScreenContentState extends State<_AchievementsScreenContent>
               return CustomScrollView(
                 controller: _scrollController,
                 slivers: [
-                  // Achievements App Bar
                   SliverAppBar(
                     expandedHeight: 200,
                     floating: false,
@@ -186,19 +185,13 @@ class _AchievementsScreenContentState extends State<_AchievementsScreenContent>
                       indicatorColor: AppColors.accent,
                     ),
                   ),
-
-                  // Achievements Content
                   SliverFillRemaining(
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        // All Achievements
                         _buildAchievementsList(achievements),
-                        // Common
                         _buildAchievementsList(_filterAchievements(achievements, AchievementRarity.common)),
-                        // Rare
                         _buildAchievementsList(_filterAchievements(achievements, AchievementRarity.rare)),
-                        // Epic + Legendary
                         _buildAchievementsList([
                           ..._filterAchievements(achievements, AchievementRarity.epic),
                           ..._filterAchievements(achievements, AchievementRarity.legendary),

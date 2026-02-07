@@ -5,6 +5,7 @@ import '../../../../core/shared/widgets/card_widget.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/di/injection_container.dart';
 import '../../../../core/services/storage_service.dart';
+import '../../../policy/policy_repository.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -28,7 +29,6 @@ class SettingsScreen extends StatelessWidget {
         child: SafeArea(
           child: CustomScrollView(
             slivers: [
-              // App Bar
               SliverAppBar(
                 expandedHeight: 120,
                 floating: false,
@@ -62,13 +62,10 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Settings content
               SliverPadding(
                 padding: const EdgeInsets.all(24),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                    // About Section
                     const CustomText.subtitle(
                       text: 'About',
                       hasGlow: true,
@@ -100,12 +97,13 @@ class SettingsScreen extends StatelessWidget {
                       title: 'Privacy Policy',
                       subtitle: 'How we handle your data',
                       onTap: () {
-                        _showPrivacyDialog(context);
+                        final url = Uri.encodeComponent(
+                          getIt<PolicyStore>().policySeedUrl,
+                        );
+                        context.push('/policy?url=$url');
                       },
                     ),
                     const SizedBox(height: 32),
-
-                    // Support Section
                     const CustomText.subtitle(
                       text: 'Support',
                       hasGlow: true,
@@ -121,8 +119,6 @@ class SettingsScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 32),
-
-                    // Data Section
                     const CustomText.subtitle(
                       text: 'Data',
                       hasGlow: true,
@@ -139,8 +135,6 @@ class SettingsScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 48),
-
-                    // App info
                     Center(
                       child: Column(
                         children: [

@@ -17,7 +17,6 @@ class CompleteChallengeUseCase {
     required DateTime completedAt,
   }) async {
     try {
-      // Get current challenge to verify it exists and isn't already completed
       final challenge = await repository.getTodaysChallenge();
       
       if (challenge == null || challenge.id != challengeId) {
@@ -28,13 +27,10 @@ class CompleteChallengeUseCase {
         return false; // Challenge already completed
       }
       
-      // Mark challenge as completed
       await repository.markChallengeCompleted(challengeId);
       
-      // Update engagement profile
       await _updateEngagementProfile(challenge, completedAt);
       
-      // Record analytics
       await analytics.recordChallengeCompleted(
         challengeId: challengeId,
         challengeType: challenge.type,
@@ -45,7 +41,6 @@ class CompleteChallengeUseCase {
       
       return true;
     } catch (e) {
-      // Log error in production
       return false;
     }
   }
@@ -54,12 +49,10 @@ class CompleteChallengeUseCase {
     try {
       final profile = await repository.getEngagementProfile();
       
-      // Update challenge type stats
       final updatedChallengeStats = Map<String, int>.from(profile.challengeTypeStats);
       final challengeTypeKey = challenge.type.name;
       updatedChallengeStats[challengeTypeKey] = (updatedChallengeStats[challengeTypeKey] ?? 0) + 1;
       
-      // Check if this is the first engagement today
       final today = DateTime.now();
       final isFirstEngagementToday = !_isSameDay(profile.lastEngagementDate, today);
       
@@ -67,23 +60,18 @@ class CompleteChallengeUseCase {
       int newLongestStreak = profile.longestStreak;
       
       if (isFirstEngagementToday) {
-        // Check if this continues a streak
         final yesterday = today.subtract(const Duration(days: 1));
         final wasActiveYesterday = _isSameDay(profile.lastEngagementDate, yesterday);
         
         if (wasActiveYesterday || profile.currentStreak == 0) {
-          // Continue or start streak
           newCurrentStreak = profile.currentStreak + 1;
         } else {
-          // Streak was broken, start new one
           newCurrentStreak = 1;
         }
         
-        // Update longest streak if necessary
         if (newCurrentStreak > newLongestStreak) {
           newLongestStreak = newCurrentStreak;
           
-          // Record streak milestone
           await analytics.recordStreakMilestone(
             streakLength: newCurrentStreak,
             achievedAt: completedAt,
@@ -101,7 +89,6 @@ class CompleteChallengeUseCase {
       
       await repository.updateEngagementProfile(updatedProfile);
       
-      // Record daily engagement analytics
       await analytics.recordDailyEngagement(
         sessionDate: completedAt,
         challengeCompleted: true,
@@ -110,7 +97,6 @@ class CompleteChallengeUseCase {
       );
       
     } catch (e) {
-      // Log error in production but don't rethrow to avoid blocking challenge completion
     }
   }
 
